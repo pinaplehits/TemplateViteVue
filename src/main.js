@@ -4,6 +4,7 @@ import { createApp } from 'vue'
 import { createVuetify } from 'vuetify'
 import * as vuetifyComponents from 'vuetify/components'
 import * as vuetifyDirectives from 'vuetify/directives'
+import '@mdi/font/css/materialdesignicons.css'
 import App from './App.vue'
 import router from './router'
 
