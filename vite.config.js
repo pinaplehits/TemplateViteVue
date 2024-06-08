@@ -38,7 +38,8 @@ export default defineConfig({
       '@pages': path.resolve('src/pages'),
       '@components': path.resolve('src/components'),
       '@router': path.resolve('src/router'),
-      '@services': path.resolve('src/services')
+      '@services': path.resolve('src/services'),
+      '@stores': path.resolve('src/stores')
     }
   }
 })

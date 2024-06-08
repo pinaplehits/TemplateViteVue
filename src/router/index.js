@@ -24,7 +24,7 @@ router.beforeEach((to, from) => {
 })
 
 router.beforeResolve((to, from) => {
-  if (to.name !== 'Login') {
+  if (to.name !== 'Login' && from.name !== to.name) {
     localStorage.setItem('lastVisitedRoute', to.name)
     console.log(`Adding route ${to.name} to localStorage`)
 

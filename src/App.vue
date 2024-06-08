@@ -1,28 +1,31 @@
 <template>
   <v-app>
-    <v-app-bar title="Application bar">
+    <v-app-bar
+      v-if="isLoggedIn"
+      title="Application bar"
+    >
       <template #prepend>
         <v-app-bar-nav-icon @click.stop="navBarEnabled = !navBarEnabled" />
       </template>
     </v-app-bar>
-    <v-navigation-drawer v-model="navBarEnabled">
+    <v-navigation-drawer
+      v-if="isLoggedIn"
+      v-model="navBarEnabled"
+    >
       <v-list nav>
         <v-list-item
           v-for="route in navRoutes"
           :key="route.name"
           :to="route.path"
-        >
-          <v-list-item-title>{{ route.name }}</v-list-item-title>
-        </v-list-item>
+          :title="route.name"
+        />
       </v-list>
     </v-navigation-drawer>
-
     <v-main
       class="d-flex align-center justify-center"
-      style="min-height: 300px"
+      style="background-color: #faf8f6"
     >
-      <h1>Current page path: {{ $route.path }}</h1>
-      <router-view />
+      <router-view class="bg-white" />
     </v-main>
   </v-app>
 </template>
@@ -31,6 +34,10 @@
   import { RouterView } from 'vue-router'
   import routes from '@router/routes.js'
   import { ref } from 'vue'
+  import { useAuthStore } from '@stores/authStore.js'
+
+  const authStore = useAuthStore()
+  const isLoggedIn = authStore.isLoggedIn
 
   const navBarEnabled = ref(true)
 
