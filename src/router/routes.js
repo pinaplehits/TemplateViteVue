@@ -31,5 +31,11 @@ export default [
     name: 'NotFound',
     component: () => import('@pages/NotFoundPage.vue'),
     meta: { hideInNav: true }
+  },
+  {
+    path: '/esop',
+    name: 'Esop',
+    component: () => import('@pages/EsopAdminPage.vue'),
+    meta: { requiresAuthentication: true }
   }
 ]
