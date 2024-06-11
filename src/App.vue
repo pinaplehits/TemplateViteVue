@@ -20,12 +20,21 @@
           :title="route.name"
         />
       </v-list>
+      <template #append>
+        <div class="pa-2">
+          <v-btn
+            block
+            text="Logout"
+            @click="useAuthStore().logout"
+          />
+        </div>
+      </template>
     </v-navigation-drawer>
     <v-main
       class="d-flex align-center justify-center"
       style="background-color: #faf8f6"
     >
-      <router-view class="bg-white" />
+      <router-view />
     </v-main>
   </v-app>
 </template>
@@ -33,13 +42,11 @@
 <script setup>
   import { RouterView } from 'vue-router'
   import routes from '@router/routes.js'
-  import { ref } from 'vue'
+  import { ref, toRef } from 'vue'
   import { useAuthStore } from '@stores/authStore.js'
 
-  const authStore = useAuthStore()
-  const isLoggedIn = authStore.isLoggedIn
-
-  const navBarEnabled = ref(true)
+  const isLoggedIn = toRef(useAuthStore(), 'isLoggedIn')
+  const navBarEnabled = ref(false)
 
   const navRoutes = routes.filter(
     (route) => route.meta?.hideInNav !== true && !route.redirect

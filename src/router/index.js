@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import routes from '@router/routes.js'
-import { isAuthenticated } from '@services/authService.js'
+import { useAuthStore } from '@stores/authStore.js'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -14,7 +14,7 @@ router.beforeEach((to, from) => {
 
   if (!requiresAuthentication && !restrictIfAuthenticated) return true
 
-  const authenticated = isAuthenticated()
+  const authenticated = useAuthStore().isLoggedIn
 
   if (restrictIfAuthenticated && authenticated) {
     return !from.name ? { name: 'Home' } : false

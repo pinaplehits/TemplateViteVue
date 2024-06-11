@@ -79,7 +79,6 @@
   const loading = ref(false)
   const loadingLogin = ref(false)
   const loadingProduction = ref(false)
-  const authStore = useAuthStore()
   const router = useRouter()
 
   const login = async () => {
@@ -96,14 +95,14 @@
       loading.value = true
       loadingLogin.value = true
 
-      await authStore.login({
+      await useAuthStore().login({
         username: username.value,
         password: password.value
       })
 
       router.push({ name: 'Home' })
     } catch (error) {
-      errorMessage.value = error.message
+      errorMessage.value = error
     } finally {
       loadingLogin.value = false
       loading.value = false
@@ -112,15 +111,17 @@
 
   const loginProduction = async () => {
     form.value.resetValidation()
+    errorMessage.value = null
+
     if (loading.value) return
 
     try {
       loading.value = true
       loadingProduction.value = true
-      await authStore.loginProduction()
+      await useAuthStore().loginProduction()
       router.push({ name: 'ProductionSOP' })
     } catch (error) {
-      errorMessage.value = error.message
+      errorMessage.value = error
     } finally {
       loadingProduction.value = false
       loading.value = false

@@ -19,24 +19,31 @@ axiosRetry(apiClient, {
 
 apiClient.interceptors.request.use(
   (request) => {
+    if (useAuthStore().isLoggedIn) {
+      request.headers.Authorization = `Bearer ${useAuthStore().token}`
+    }
+
     return request
   },
-  (error) => {
-    return Promise.reject(error)
-  }
+  (error) => error
 )
 
 apiClient.interceptors.response.use(
   (response) => {
-    return response
+    return response.data
   },
   (error) => {
-    if (error.response && error.response.status === 401) {
-      const authStore = useAuthStore()
-      authStore.logout()
-    }
+    const { response, message } = error
 
-    return Promise.reject(error)
+    if (response?.status === 401) useAuthStore().logout()
+
+    if (response?.status === 404) throw response.data
+
+    if (error.code === 'ERR_NETWORK') throw error.message
+
+    if (message) throw message
+
+    throw error
   }
 )
 
