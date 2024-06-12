@@ -1,3 +1,17 @@
+<script setup>
+  import { RouterView } from 'vue-router'
+  import routes from '@router/routes.js'
+  import { ref, toRef } from 'vue'
+  import { useAuthStore } from '@stores/authStore.js'
+
+  const isLoggedIn = toRef(useAuthStore(), 'isLoggedIn')
+  const navBarEnabled = ref(false)
+
+  const navRoutes = routes.filter(
+    (route) => route.meta?.hideInNav !== true && !route.redirect
+  )
+</script>
+
 <template>
   <v-app>
     <v-app-bar
@@ -38,17 +52,3 @@
     </v-main>
   </v-app>
 </template>
-
-<script setup>
-  import { RouterView } from 'vue-router'
-  import routes from '@router/routes.js'
-  import { ref, toRef } from 'vue'
-  import { useAuthStore } from '@stores/authStore.js'
-
-  const isLoggedIn = toRef(useAuthStore(), 'isLoggedIn')
-  const navBarEnabled = ref(false)
-
-  const navRoutes = routes.filter(
-    (route) => route.meta?.hideInNav !== true && !route.redirect
-  )
-</script>

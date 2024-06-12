@@ -1,45 +1,3 @@
-<template>
-  <v-container fill-height>
-    <v-card>
-      <v-card-title>
-        <v-text-field
-          v-model="search"
-          density="compact"
-          label="Search"
-          :prepend-inner-icon="searchFocused ? '' : 'mdi-magnify'"
-          single-line
-          variant="outlined"
-          flat
-          color="primary"
-          class="my-1"
-          style="width: 400px"
-          hide-details
-          @focus="searchFocused = true"
-          @blur="searchFocused = false"
-        />
-      </v-card-title>
-      <v-divider />
-      <v-data-table
-        :items="items"
-        :loading="loading"
-        :search="search"
-        hover
-        show-select
-        item-value="name"
-        v-model="selected"
-        fixed-header
-        class="full-height-table"
-        items-per-page="-1"
-        hide-default-footer
-      >
-        <template #loading>
-          <v-skeleton-loader type="table-row-divider@10" />
-        </template>
-      </v-data-table>
-    </v-card>
-  </v-container>
-</template>
-
 <script setup>
   import { ref } from 'vue'
   const search = ref()
@@ -301,7 +259,49 @@
   }, 1000)
 </script>
 
-<style>
+<template>
+  <v-container fill-height>
+    <v-card>
+      <v-card-title>
+        <v-text-field
+          v-model="search"
+          density="compact"
+          label="Search"
+          :prepend-inner-icon="searchFocused ? '' : 'mdi-magnify'"
+          single-line
+          variant="outlined"
+          flat
+          color="primary"
+          class="my-1"
+          style="width: 400px"
+          hide-details
+          @focus="searchFocused = true"
+          @blur="searchFocused = false"
+        />
+      </v-card-title>
+      <v-divider />
+      <v-data-table
+        :items="items"
+        :loading="loading"
+        :search="search"
+        hover
+        show-select
+        item-value="name"
+        v-model="selected"
+        fixed-header
+        class="full-height-table"
+        items-per-page="-1"
+        hide-default-footer
+      >
+        <template #loading>
+          <v-skeleton-loader type="table-row-divider@10" />
+        </template>
+      </v-data-table>
+    </v-card>
+  </v-container>
+</template>
+
+<style scoped>
   .full-height-table {
     height: calc(100vh - 165px);
   }

@@ -1,3 +1,66 @@
+<script setup>
+  import { ref } from 'vue'
+  import { useRouter } from 'vue-router'
+  import { useAuthStore } from '@stores/authStore.js'
+
+  const form = ref()
+  const username = ref(null)
+  const password = ref(null)
+  const passwordVisible = ref(false)
+  const errorMessage = ref(null)
+  const loading = ref(false)
+  const loadingLogin = ref(false)
+  const loadingProduction = ref(false)
+  const router = useRouter()
+
+  const login = async () => {
+    if (loading.value) return
+
+    errorMessage.value = null
+
+    const { valid } = await form.value.validate()
+
+    if (!valid)
+      return (errorMessage.value = 'Please fill in all required fields')
+
+    try {
+      loading.value = true
+      loadingLogin.value = true
+
+      await useAuthStore().login({
+        username: username.value,
+        password: password.value
+      })
+
+      router.push({ name: 'Home' })
+    } catch (error) {
+      errorMessage.value = error
+    } finally {
+      loadingLogin.value = false
+      loading.value = false
+    }
+  }
+
+  const loginProduction = async () => {
+    form.value.resetValidation()
+    errorMessage.value = null
+
+    if (loading.value) return
+
+    try {
+      loading.value = true
+      loadingProduction.value = true
+      await useAuthStore().loginProduction()
+      router.push({ name: 'ProductionSOP' })
+    } catch (error) {
+      errorMessage.value = error
+    } finally {
+      loadingProduction.value = false
+      loading.value = false
+    }
+  }
+</script>
+
 <template>
   <v-card
     width="600"
@@ -65,66 +128,3 @@
     </v-card-actions>
   </v-card>
 </template>
-
-<script setup>
-  import { ref } from 'vue'
-  import { useRouter } from 'vue-router'
-  import { useAuthStore } from '@stores/authStore.js'
-
-  const form = ref()
-  const username = ref(null)
-  const password = ref(null)
-  const passwordVisible = ref(false)
-  const errorMessage = ref(null)
-  const loading = ref(false)
-  const loadingLogin = ref(false)
-  const loadingProduction = ref(false)
-  const router = useRouter()
-
-  const login = async () => {
-    if (loading.value) return
-
-    errorMessage.value = null
-
-    const { valid } = await form.value.validate()
-
-    if (!valid)
-      return (errorMessage.value = 'Please fill in all required fields')
-
-    try {
-      loading.value = true
-      loadingLogin.value = true
-
-      await useAuthStore().login({
-        username: username.value,
-        password: password.value
-      })
-
-      router.push({ name: 'Home' })
-    } catch (error) {
-      errorMessage.value = error
-    } finally {
-      loadingLogin.value = false
-      loading.value = false
-    }
-  }
-
-  const loginProduction = async () => {
-    form.value.resetValidation()
-    errorMessage.value = null
-
-    if (loading.value) return
-
-    try {
-      loading.value = true
-      loadingProduction.value = true
-      await useAuthStore().loginProduction()
-      router.push({ name: 'ProductionSOP' })
-    } catch (error) {
-      errorMessage.value = error
-    } finally {
-      loadingProduction.value = false
-      loading.value = false
-    }
-  }
-</script>
