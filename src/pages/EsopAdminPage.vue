@@ -1,17 +1,21 @@
 <template>
   <v-container fill-height>
     <v-card>
-      <v-card-title class="d-flex align-center pe-2">
-        Current ESOP
-        <v-spacer />
+      <v-card-title>
         <v-text-field
           v-model="search"
           density="compact"
           label="Search"
-          prepend-inner-icon="mdi-magnify"
+          :prepend-inner-icon="searchFocused ? '' : 'mdi-magnify'"
           single-line
-          variant="solo-filled"
+          variant="outlined"
           flat
+          color="primary"
+          class="my-1"
+          style="width: 400px"
+          hide-details
+          @focus="searchFocused = true"
+          @blur="searchFocused = false"
         />
       </v-card-title>
       <v-divider />
@@ -23,6 +27,10 @@
         show-select
         item-value="name"
         v-model="selected"
+        fixed-header
+        class="full-height-table"
+        items-per-page="-1"
+        hide-default-footer
       >
         <template #loading>
           <v-skeleton-loader type="table-row-divider@10" />
@@ -35,6 +43,7 @@
 <script setup>
   import { ref } from 'vue'
   const search = ref()
+  const searchFocused = ref(false)
   const selected = ref([])
   const items = [
     {
@@ -285,9 +294,15 @@
     }
   ]
 
+  //Delete this is for testing the animation of the loading
   const loading = ref(true)
-
   setTimeout(() => {
     loading.value = false
   }, 1000)
 </script>
+
+<style>
+  .full-height-table {
+    height: calc(100vh - 165px);
+  }
+</style>

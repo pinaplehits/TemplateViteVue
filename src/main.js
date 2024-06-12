@@ -1,4 +1,3 @@
-import './style.css'
 import 'vuetify/styles'
 import { createApp } from 'vue'
 import { createVuetify } from 'vuetify'
