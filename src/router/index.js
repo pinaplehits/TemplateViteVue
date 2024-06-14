@@ -9,6 +9,8 @@ const router = createRouter({
 
 // TODO: Check user authorization
 router.beforeEach((to, from) => {
+  // Destructures the properties from the 'to.meta' object.
+  // If these properties are not present in 'to.meta', they are assigned default values respectively.
   const { requiresAuthentication = true, restrictIfAuthenticated = false } =
     to.meta
 

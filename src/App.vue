@@ -8,7 +8,7 @@
   const navBarEnabled = ref(false)
 
   const navRoutes = routes.filter(
-    (route) => route.meta?.hideInNav !== true && !route.redirect
+    (route) => route.meta?.showInNav === true && !route.redirect
   )
 </script>
 

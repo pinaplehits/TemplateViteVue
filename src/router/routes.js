@@ -10,32 +10,19 @@ export default [
     redirect: { name: 'Login' }
   },
   {
-    path: '/helloworld',
-    name: 'HelloWorld',
-    component: () => import('@components/HelloWorld.vue'),
-    meta: { requiresAuthentication: true }
-  },
-  {
     path: '/home',
     name: 'Home',
     component: () => import('@pages/HomePage.vue')
   },
   {
-    path: '/about',
-    name: 'About',
-    component: () => import('@pages/AboutPage.vue'),
-    meta: { requiresAuthentication: false }
-  },
-  {
     path: '/:catchAll(.*)',
     name: 'NotFound',
-    component: () => import('@pages/NotFoundPage.vue'),
-    meta: { hideInNav: true }
+    component: () => import('@pages/NotFoundPage.vue')
   },
   {
     path: '/esop',
     name: 'Esop',
     component: () => import('@pages/EsopAdminPage.vue'),
-    meta: { requiresAuthentication: true }
+    meta: { requiresAuthentication: true, showInNav: true }
   }
 ]
