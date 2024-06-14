@@ -1,6 +1,7 @@
 <script setup>
   import { ref, onMounted, watch } from 'vue'
   import apiClient from '@utils/axiosConfig.js'
+  import { convertDateProperties } from '@utils/dateUtils.js'
 
   const search = ref('')
   const searchFocused = ref(false)
@@ -14,13 +15,19 @@
       loading.value = true
       const { data } = await apiClient.get('AssemblyDell/GetEsop')
 
-      items.value = data.items
+      items.value = convertDateProperties(data)
+
       headers.value = data.headers.filter((header) => header.visible === true)
+      headers.value.push({ title: 'Actions', key: 'Actions' })
     } catch (error) {
       console.error(error.message)
     } finally {
       loading.value = false
     }
+  }
+
+  const deleteItem = (item) => {
+    console.log(item)
   }
 
   onMounted(() => {
@@ -94,23 +101,37 @@
           </tr>
         </template>
         <template #item="{ item, columns }">
-          <tr>
+          <tr @click="() => console.log(item.id)">
             <template
               v-for="column in columns"
               :key="column.key"
             >
-              <td>
-                <template v-if="column.value === 'data-table-select'">
+              <template v-if="column.key === 'data-table-select'">
+                <td style="width: 0px">
                   <v-checkbox-btn
                     v-model="selected"
                     :value="item"
                     color="primary"
+                    @click.stop
                   />
-                </template>
-                <template v-else>
+                </td>
+              </template>
+              <template v-else-if="column.key !== 'Actions'">
+                <td>
                   {{ item[column.key] }}
-                </template>
-              </td>
+                </td>
+              </template>
+              <template v-else>
+                <td style="text-align: center; width: 0px">
+                  <v-icon
+                    size="small"
+                    style="color: maroon"
+                    @click.stop="deleteItem(item)"
+                  >
+                    mdi-delete
+                  </v-icon>
+                </td>
+              </template>
             </template>
           </tr>
         </template>
