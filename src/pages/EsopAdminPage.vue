@@ -3,6 +3,7 @@
   import apiClient from '@utils/axiosConfig.js'
   import { convertDateProperties } from '@utils/dateUtils.js'
 
+  const sortBy = ref([])
   const search = ref('')
   const searchFocused = ref(false)
   const selected = ref([])
@@ -33,6 +34,22 @@
   onMounted(() => {
     loadData()
   })
+
+  const toggleSort = (column) => {
+    let order = 'asc'
+    const currentSort = sortBy.value[0]
+
+    if (currentSort && currentSort.key === column.key) {
+      if (currentSort.order === 'asc') {
+        order = 'desc'
+      } else {
+        sortBy.value = []
+        return
+      }
+    }
+
+    sortBy.value = [{ key: column.key, order }]
+  }
 
   watch(search, () => {
     selected.value = []
@@ -65,6 +82,7 @@
         :headers="headers"
         :loading="loading"
         :search="search"
+        :sort-by="sortBy"
         hover
         show-select
         v-model="selected"
@@ -84,19 +102,25 @@
               v-for="column in columns"
               :key="column.key"
             >
-              <th style="font-weight: bold; background-color: lavender">
-                <template v-if="column.value === 'data-table-select'">
+              <template v-if="column.value === 'data-table-select'">
+                <th style="background-color: lavender">
                   <v-checkbox-btn
                     :indeterminate="someSelected && !allSelected"
                     :model-value="allSelected"
                     color="primary"
                     @update:model-value="selectAll(!allSelected)"
+                    @click.stop
                   />
-                </template>
-                <template v-else>
+                </th>
+              </template>
+              <template v-else>
+                <th
+                  style="font-weight: bold; background-color: lavender"
+                  @click.stop="toggleSort(column)"
+                >
                   {{ column.title }}
-                </template>
-              </th>
+                </th>
+              </template>
             </template>
           </tr>
         </template>
