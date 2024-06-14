@@ -115,10 +115,24 @@
               </template>
               <template v-else>
                 <th
-                  style="font-weight: bold; background-color: lavender"
+                  style="
+                    font-weight: bold;
+                    background-color: lavender;
+                    cursor: pointer;
+                  "
                   @click.stop="toggleSort(column)"
                 >
                   {{ column.title }}
+                  <v-icon
+                    small
+                    v-if="sortBy[0]?.key === column.key"
+                  >
+                    {{
+                      sortBy[0]?.order === 'asc'
+                        ? 'mdi-arrow-up'
+                        : 'mdi-arrow-down'
+                    }}
+                  </v-icon>
                 </th>
               </template>
             </template>
