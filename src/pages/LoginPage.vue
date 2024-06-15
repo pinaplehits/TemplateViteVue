@@ -97,14 +97,13 @@
           class="mt-3 mb-2"
         />
         <div class="d-flex justify-space-between align-center">
-          <span style="color: darkred; margin-left: 0.5rem; margin-top: 0.5rem">
+          <span style="color: #b00020; margin-left: 0.5rem; margin-top: 0.5rem">
             {{ errorMessage }}
           </span>
           <v-btn
             @click="login"
             :disabled="loading"
             :loading="loadingLogin"
-            style="background-color: #0065b3; color: white; font-weight: 600"
             elevation="3"
             text="Login"
             class="mr-2"
@@ -122,9 +121,16 @@
         elevation="4"
         class="my-3 mx-auto"
         text="Enter production"
-        style="background-color: #0065b3; color: white; font-weight: 600"
         type="submit"
       />
     </v-card-actions>
   </v-card>
 </template>
+
+<style scoped>
+  .v-btn {
+    color: white;
+    background-color: #0065b3;
+    font-weight: bold;
+  }
+</style>
