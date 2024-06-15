@@ -157,12 +157,7 @@
                   />
                 </td>
               </template>
-              <template v-else-if="column.key !== 'Actions'">
-                <td>
-                  {{ item[column.key] }}
-                </td>
-              </template>
-              <template v-else>
+              <template v-else-if="column.key === 'Actions'">
                 <td style="text-align: center; width: 0px">
                   <v-icon
                     size="small"
@@ -171,6 +166,11 @@
                   >
                     mdi-delete
                   </v-icon>
+                </td>
+              </template>
+              <template v-else>
+                <td>
+                  {{ item[column.key] }}
                 </td>
               </template>
             </template>
