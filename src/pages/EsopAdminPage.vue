@@ -31,16 +31,10 @@
     console.log(item)
   }
 
-  onMounted(() => {
-    loadData()
-  })
-
-  const toggleSort = (column) => {
+  const toggleSort = (key) => {
     let order = 'asc'
-    const currentSort = sortBy.value[0]
-
-    if (currentSort && currentSort.key === column.key) {
-      if (currentSort.order === 'asc') {
+    if (sortBy.value[0] && sortBy.value[0].key === key) {
+      if (sortBy.value[0].order === 'asc') {
         order = 'desc'
       } else {
         sortBy.value = []
@@ -48,8 +42,20 @@
       }
     }
 
-    sortBy.value = [{ key: column.key, order }]
+    sortBy.value = [{ key, order }]
   }
+
+  const sortIcon = (key) => {
+    if (sortBy.value[0]?.key === key) {
+      return sortBy.value[0]?.order === 'asc'
+        ? 'mdi-arrow-up'
+        : 'mdi-arrow-down'
+    }
+
+    return 'mdi-arrow-up'
+  }
+
+  onMounted(loadData)
 
   watch(search, () => {
     selected.value = []
@@ -87,7 +93,6 @@
         show-select
         v-model="selected"
         fixed-header
-        class="full-height-table"
         items-per-page="-1"
         hide-default-footer
         density="compact"
@@ -103,7 +108,7 @@
               :key="column.key"
             >
               <template v-if="column.value === 'data-table-select'">
-                <th style="background-color: lavender">
+                <th>
                   <v-checkbox-btn
                     :indeterminate="someSelected && !allSelected"
                     :model-value="allSelected"
@@ -113,25 +118,23 @@
                   />
                 </th>
               </template>
+              <template v-else-if="column.key === 'Actions'">
+                <th>
+                  {{ column.title }}
+                </th>
+              </template>
               <template v-else>
                 <th
-                  style="
-                    font-weight: bold;
-                    background-color: lavender;
-                    cursor: pointer;
-                  "
-                  @click.stop="toggleSort(column)"
+                  class="header-no-wrap"
+                  @click.stop="toggleSort(column.key)"
                 >
                   {{ column.title }}
                   <v-icon
                     small
-                    v-if="sortBy[0]?.key === column.key"
+                    class="sort-icon"
+                    :class="{ 'is-sorting': sortBy[0]?.key === column.key }"
                   >
-                    {{
-                      sortBy[0]?.order === 'asc'
-                        ? 'mdi-arrow-up'
-                        : 'mdi-arrow-down'
-                    }}
+                    {{ sortIcon(column.key) }}
                   </v-icon>
                 </th>
               </template>
@@ -179,7 +182,33 @@
 </template>
 
 <style scoped>
-  .full-height-table {
+  .v-data-table {
     height: calc(100vh - 165px);
+  }
+
+  ::v-deep th {
+    background-color: lavender !important;
+    font-weight: bold !important;
+  }
+
+  .header-no-wrap {
+    cursor: pointer;
+    white-space: nowrap;
+  }
+
+  .header-no-wrap:hover .sort-icon:not(.is-sorting) {
+    visibility: visible;
+    opacity: 0.5;
+  }
+
+  .sort-icon {
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+
+  .is-sorting {
+    visibility: visible;
+    opacity: 1;
   }
 </style>
