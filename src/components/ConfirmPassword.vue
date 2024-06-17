@@ -1,23 +1,54 @@
 <script setup>
-  import { ref, watch } from 'vue'
+  import { ref, watch, computed } from 'vue'
 
-  const showDialog = ref(false)
+  const props = defineProps({
+    showDialog: { type: Boolean, required: true }
+  })
+
+  const emit = defineEmits(['update:showDialog'])
+
   const loading = ref(false)
-  const form = ref()
+  const form = ref(null)
   const password = ref('')
   const passwordVisible = ref(false)
 
-  watch(showDialog, (newValue) => {
-    if (newValue === false) {
-      form.value.reset()
-      passwordVisible.value = false
+  const dialogModel = computed({
+    get() {
+      return props.showDialog
+    },
+    set(value) {
+      emit('update:showDialog', value)
     }
   })
+
+  const validate = async () => {
+    const { valid } = await form.value.validate()
+
+    if (!valid) return
+
+    loading.value = true
+
+    setTimeout(() => {
+      loading.value = false
+      emit('update:showDialog', false)
+    }, 2000)
+  }
+
+  watch(
+    () => props.showDialog,
+    (newValue) => {
+      if (!newValue) {
+        form.value.reset()
+        passwordVisible.value = false
+      }
+    }
+  )
 </script>
 
 <template>
   <v-dialog
-    v-model="showDialog"
+    persistent
+    v-model="dialogModel"
     max-width="525"
   >
     <v-card class="px-2 py-2">
@@ -47,20 +78,22 @@
           :disabled="loading"
           @click:append-inner="passwordVisible = !passwordVisible"
         />
+        <v-card-actions class="justify-end">
+          <v-btn
+            :disabled="loading"
+            text="Cancel"
+            @click.stop="dialogModel = false"
+          />
+          <v-btn
+            text="Delete"
+            :disabled="loading"
+            :loading="loading"
+            type="submit"
+            class="delete-button"
+            @click="validate"
+          />
+        </v-card-actions>
       </v-form>
-      <v-card-actions>
-        <v-btn
-          text="Cancel"
-          @click.stop="showDialog = false"
-        />
-        <v-btn
-          text="Delete"
-          :disable="loading"
-          :loading="loading"
-          type="submit"
-          class="delete-button"
-        />
-      </v-card-actions>
     </v-card>
   </v-dialog>
 </template>
@@ -69,7 +102,6 @@
   .v-btn {
     font-weight: bold;
   }
-
   .delete-button {
     background-color: #b00020;
     color: white;
