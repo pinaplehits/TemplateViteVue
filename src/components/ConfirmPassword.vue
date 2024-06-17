@@ -1,8 +1,10 @@
 <script setup>
   import { ref, watch, computed } from 'vue'
+  import apiClient from '@utils/axiosConfig.js'
 
   const props = defineProps({
-    showDialog: { type: Boolean, required: true }
+    showDialog: { type: Boolean, required: true },
+    endpoint: { type: String, required: true }
   })
 
   const emit = defineEmits(['update:showDialog'])
@@ -28,10 +30,18 @@
 
     loading.value = true
 
-    setTimeout(() => {
+    try {
+      console.log('endpoint:', props.endpoint)
+      const response = await apiClient.delete(props.endpoint, {
+        data: { password: password.value }
+      })
+
+      console.log(response)
+    } catch (error) {
+      console.error(error)
+    } finally {
       loading.value = false
-      emit('update:showDialog', false)
-    }, 2000)
+    }
   }
 
   watch(

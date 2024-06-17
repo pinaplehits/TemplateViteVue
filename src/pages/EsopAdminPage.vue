@@ -2,6 +2,7 @@
   import { ref, onMounted, watch } from 'vue'
   import apiClient from '@utils/axiosConfig.js'
   import { convertDateProperties } from '@utils/dateUtils.js'
+  import ConfirmPassword from '@components/ConfirmPassword.vue'
 
   const sortBy = ref([])
   const search = ref('')
@@ -10,11 +11,15 @@
   const loading = ref(false)
   const items = ref([])
   const headers = ref([])
+  const deleteEndpoint = 'AssemblyDell/DeleteSop'
+  const getEndpoint = 'AssemblyDell/GetEsop'
+
+  const showConfirmPassword = ref(false)
 
   const loadData = async () => {
     try {
       loading.value = true
-      const { data } = await apiClient.get('AssemblyDell/GetEsop')
+      const { data } = await apiClient.get(getEndpoint)
 
       items.value = convertDateProperties(data)
 
@@ -28,6 +33,7 @@
   }
 
   const deleteItem = (item) => {
+    showConfirmPassword.value = true
     console.log(item)
   }
 
@@ -63,6 +69,10 @@
 </script>
 
 <template>
+  <ConfirmPassword
+    v-model:showDialog="showConfirmPassword"
+    v-model:endpoint="deleteEndpoint"
+  />
   <v-container fill-height>
     <v-card>
       <v-card-title>
