@@ -13,18 +13,30 @@
   const headers = ref([])
   const deleteEndpoint = 'AssemblyDell/DeleteSop'
   const getEndpoint = 'AssemblyDell/GetEsop'
+  const currentItem = ref({ assemblyDell: {} })
 
   const showConfirmPassword = ref(false)
 
-  const loadData = async () => {
+  const getSop = async () => {
     try {
-      loading.value = true
       const { data } = await apiClient.get(getEndpoint)
 
       items.value = convertDateProperties(data)
 
       headers.value = data.headers.filter((header) => header.visible === true)
       headers.value.push({ title: 'Actions', key: 'Actions' })
+    } catch (error) {
+      items.value = []
+      headers.value = []
+
+      throw new Error(error)
+    }
+  }
+
+  const loadData = async () => {
+    loading.value = true
+    try {
+      await getSop()
     } catch (error) {
       console.error(error.message)
     } finally {
@@ -33,8 +45,8 @@
   }
 
   const deleteItem = (item) => {
+    currentItem.value.assemblyDell.id = item
     showConfirmPassword.value = true
-    console.log(item)
   }
 
   const toggleSort = (key) => {
@@ -72,6 +84,8 @@
   <ConfirmPassword
     v-model:showDialog="showConfirmPassword"
     v-model:endpoint="deleteEndpoint"
+    :data="currentItem"
+    @success="getSop"
   />
   <v-container fill-height>
     <v-card>
@@ -172,7 +186,7 @@
                   <v-icon
                     size="small"
                     style="color: maroon"
-                    @click.stop="deleteItem(item)"
+                    @click.stop="deleteItem(item.id)"
                   >
                     mdi-delete
                   </v-icon>
@@ -196,7 +210,7 @@
     height: calc(100vh - 165px);
   }
 
-  ::v-deep th {
+  :deep th {
     background-color: lavender !important;
     font-weight: bold !important;
   }

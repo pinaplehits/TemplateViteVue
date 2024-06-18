@@ -4,15 +4,17 @@
 
   const props = defineProps({
     showDialog: { type: Boolean, required: true },
-    endpoint: { type: String, required: true }
+    endpoint: { type: String, required: true },
+    data: { type: Object, required: true }
   })
 
-  const emit = defineEmits(['update:showDialog'])
+  const emit = defineEmits(['update:showDialog', 'success'])
 
   const loading = ref(false)
   const form = ref(null)
   const password = ref('')
   const passwordVisible = ref(false)
+  const errorMessage = ref('')
 
   const dialogModel = computed({
     get() {
@@ -24,6 +26,8 @@
   })
 
   const validate = async () => {
+    errorMessage.value = ''
+
     const { valid } = await form.value.validate()
 
     if (!valid) return
@@ -31,14 +35,17 @@
     loading.value = true
 
     try {
-      console.log('endpoint:', props.endpoint)
       const response = await apiClient.delete(props.endpoint, {
-        data: { password: password.value }
+        data: {
+          ...props.data,
+          password: password.value
+        }
       })
 
-      console.log(response)
+      dialogModel.value = false
+      emit('success', response)
     } catch (error) {
-      console.error(error)
+      errorMessage.value = error
     } finally {
       loading.value = false
     }
@@ -50,6 +57,7 @@
       if (!newValue) {
         form.value.reset()
         passwordVisible.value = false
+        errorMessage.value = ''
       }
     }
   )
@@ -86,6 +94,7 @@
           :type="passwordVisible ? 'text' : 'password'"
           :rules="[(value) => !!value || 'Password is required']"
           :disabled="loading"
+          :error-messages="errorMessage"
           @click:append-inner="passwordVisible = !passwordVisible"
         />
         <v-card-actions class="justify-end">
