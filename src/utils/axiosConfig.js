@@ -35,11 +35,7 @@ apiClient.interceptors.response.use(
   (error) => {
     const { response, message } = error
 
-    if (response?.status === 401) useAuthStore().logout()
-
-    if (response?.status === 404) throw response.data
-
-    if (error.code === 'ERR_NETWORK') throw error.message
+    if (response?.data) throw response.data
 
     if (message) throw message
 
