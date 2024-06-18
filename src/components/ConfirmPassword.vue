@@ -65,7 +65,7 @@
 
 <template>
   <v-dialog
-    persistent
+    :persistent="loading"
     v-model="dialogModel"
     max-width="525"
   >
