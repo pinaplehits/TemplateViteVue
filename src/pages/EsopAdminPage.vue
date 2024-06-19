@@ -61,12 +61,13 @@
     @success="loadData"
   />
   <CreateProjectForm
-    v-model:showCreateProject="showCreateProject"
+    v-model:showForm="showCreateProject"
     @success="loadData"
   />
   <DataManagementTable
     :items="itemsSop"
     :headers="headersSop"
+    text-add-button="Create Project"
     v-model:loading="loadingTable"
     v-model:showForm="showCreateProject"
     @delete-item="deleteItem"

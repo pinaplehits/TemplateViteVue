@@ -2,7 +2,7 @@
   import { ref, watch } from 'vue'
   import apiClient from '@utils/axiosConfig.js'
 
-  const showCreateProject = defineModel('showCreateProject', {
+  const showForm = defineModel('showForm', {
     type: Boolean,
     required: true
   })
@@ -91,7 +91,7 @@
 
       const response = await apiClient.post(endpointCreateSop, data)
 
-      showCreateProject.value = false
+      showForm.value = false
       form.value.reset()
 
       emit('success', response)
@@ -104,7 +104,7 @@
 
   // onMounted(loadData)
 
-  watch(showCreateProject, (newValue) => {
+  watch(showForm, (newValue) => {
     if (!newValue) form.value.reset()
 
     if (newValue) loadData()
@@ -114,7 +114,7 @@
 <template>
   <v-dialog
     :persistent="loadingCreatingProject"
-    v-model="showCreateProject"
+    v-model="showForm"
     max-width="600"
   >
     <v-card class="px-2 py-2">
@@ -180,7 +180,7 @@
           <v-btn
             :disabled="loadingCreatingProject"
             text="Cancel"
-            @click.stop="showCreateProject = false"
+            @click.stop="showForm = false"
           />
           <v-btn
             text="Create project"

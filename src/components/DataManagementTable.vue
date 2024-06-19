@@ -8,7 +8,8 @@
 
   const props = defineProps({
     items: { type: Array, required: true },
-    headers: { type: Array, required: true }
+    headers: { type: Array, required: true },
+    textAddButton: { type: String, default: 'Add' }
   })
 
   const sortBy = ref([])
@@ -72,7 +73,7 @@
             <v-btn
               color="primary"
               @click.stop="showForm = true"
-              text="Create project"
+              :text="props.textAddButton"
             />
           </v-col>
         </v-row>
