@@ -6,20 +6,15 @@
   import DataManagementTable from '@components/DataManagementTable.vue'
   import CreateProjectForm from '@components/CreateProjectForm.vue'
 
-  const search = ref('')
-  const searchFocused = ref(false)
-  const loading = ref(false)
-
   const itemsSop = ref([])
   const headersSop = ref([])
   const currentSop = ref({ assemblyDell: {} })
+  const loadingTable = ref(false)
+  const showCreateProject = ref(false)
+  const showConfirmPassword = ref(false)
 
   const endpointDeleteSops = 'AssemblyDell/DeleteSop'
   const endpointGetSops = 'AssemblyDell/GetSops'
-
-  const showCreateProject = ref(false)
-
-  const showConfirmPassword = ref(false)
 
   const getSops = async () => {
     try {
@@ -40,13 +35,13 @@
   }
 
   const loadData = async () => {
-    loading.value = true
+    loadingTable.value = true
     try {
       await Promise.all([getSops()])
     } catch (error) {
       console.error(error.message)
     } finally {
-      loading.value = false
+      loadingTable.value = false
     }
   }
 
@@ -69,45 +64,11 @@
     v-model:showCreateProject="showCreateProject"
     @success="loadData"
   />
-  <v-container fill-height>
-    <v-card>
-      <v-container>
-        <v-row align="center">
-          <v-col>
-            <v-text-field
-              v-model="search"
-              density="compact"
-              label="Search"
-              :prepend-inner-icon="searchFocused ? '' : 'mdi-magnify'"
-              single-line
-              variant="outlined"
-              flat
-              color="primary"
-              class="my-1"
-              style="max-width: 500px"
-              hide-details
-              @focus="searchFocused = true"
-              @blur="searchFocused = false"
-            />
-          </v-col>
-          <v-spacer />
-          <v-col cols="auto">
-            <v-btn
-              color="primary"
-              @click.stop="showCreateProject = true"
-              text="Create project"
-            />
-          </v-col>
-        </v-row>
-      </v-container>
-      <v-divider />
-      <DataManagementTable
-        :items="itemsSop"
-        :headers="headersSop"
-        v-model:loading="loading"
-        v-model:search="search"
-        @delete-item="deleteItem"
-      />
-    </v-card>
-  </v-container>
+  <DataManagementTable
+    :items="itemsSop"
+    :headers="headersSop"
+    v-model:loading="loadingTable"
+    v-model:showForm="showCreateProject"
+    @delete-item="deleteItem"
+  />
 </template>
