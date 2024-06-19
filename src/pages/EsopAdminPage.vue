@@ -177,7 +177,7 @@
 <template>
   <ConfirmPassword
     v-model:showDialog="showConfirmPassword"
-    v-model:endpoint="endpointDeleteSops"
+    :endpoint="endpointDeleteSops"
     :data="currentSop"
     @success="getSops"
   />

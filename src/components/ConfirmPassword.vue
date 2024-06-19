@@ -1,29 +1,24 @@
 <script setup>
-  import { ref, watch, computed } from 'vue'
+  import { ref, watch } from 'vue'
   import apiClient from '@utils/axiosConfig.js'
 
+  const showDialog = defineModel('showDialog', {
+    type: Boolean,
+    required: true
+  })
+
   const props = defineProps({
-    showDialog: { type: Boolean, required: true },
     endpoint: { type: String, required: true },
     data: { type: Object, required: true }
   })
 
-  const emit = defineEmits(['update:showDialog', 'success'])
+  const emit = defineEmits(['success'])
 
   const loading = ref(false)
   const form = ref(null)
   const password = ref('')
   const passwordVisible = ref(false)
   const errorMessage = ref('')
-
-  const dialogModel = computed({
-    get() {
-      return props.showDialog
-    },
-    set(value) {
-      emit('update:showDialog', value)
-    }
-  })
 
   const validate = async () => {
     errorMessage.value = ''
@@ -42,7 +37,7 @@
         }
       })
 
-      dialogModel.value = false
+      showDialog.value = false
       emit('success', response)
     } catch (error) {
       errorMessage.value = error
@@ -66,7 +61,7 @@
 <template>
   <v-dialog
     :persistent="loading"
-    v-model="dialogModel"
+    v-model="showDialog"
     max-width="525"
   >
     <v-card class="px-2 py-2">
@@ -101,7 +96,7 @@
           <v-btn
             :disabled="loading"
             text="Cancel"
-            @click.stop="dialogModel = false"
+            @click.stop="showDialog = false"
           />
           <v-btn
             text="Delete"
