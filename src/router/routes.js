@@ -22,7 +22,7 @@ export default [
   {
     path: '/sops',
     name: 'SOP',
-    component: () => import('@pages/EsopAdminPage.vue'),
+    component: () => import('@pages/SopAdminPage.vue'),
     meta: { requiresAuthentication: true, showInNav: true }
   },
   {
