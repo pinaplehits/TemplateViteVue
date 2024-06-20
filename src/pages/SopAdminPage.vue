@@ -48,6 +48,10 @@
     showConfirmPassword.value = true
   }
 
+  const detailItem = (item) => {
+    console.log(item)
+  }
+
   onMounted(loadData)
 </script>
 
@@ -69,5 +73,6 @@
     v-model:loading="loading"
     v-model:showForm="showCreate"
     @delete-item="deleteItem"
+    @detail-item="detailItem"
   />
 </template>

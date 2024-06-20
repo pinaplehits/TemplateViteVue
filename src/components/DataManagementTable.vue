@@ -4,7 +4,7 @@
   const loading = defineModel('loading', { type: Boolean, required: true })
   const showForm = defineModel('showForm', { type: Boolean, required: true })
 
-  const emit = defineEmits(['deleteItem'])
+  const emit = defineEmits(['deleteItem', 'detailItem'])
 
   const props = defineProps({
     items: { type: Array, required: true },
@@ -138,7 +138,10 @@
           </tr>
         </template>
         <template #item="{ item, columns }">
-          <tr @click="() => console.log(item.id)">
+          <tr
+            @click="() => emit('detailItem', item.id)"
+            class="cursor-pointer"
+          >
             <template
               v-for="column in columns"
               :key="column.key"
@@ -156,8 +159,7 @@
               <template v-else-if="column.key === 'Actions'">
                 <td style="text-align: center; width: 0px">
                   <v-icon
-                    size="small"
-                    style="color: maroon"
+                    class="delete-icon mdi-checkbox-blank-outline"
                     @click.stop="() => emit('deleteItem', item.id)"
                   >
                     mdi-delete
@@ -206,5 +208,20 @@
   .is-sorting {
     visibility: visible;
     opacity: 1;
+  }
+
+  .delete-icon {
+    color: maroon;
+    transition:
+      background-color 0.3s,
+      border-radius 0.3s,
+      padding 0.3s;
+    padding: var(--delete-icon-padding, 7px);
+    box-sizing: content-box;
+  }
+
+  .delete-icon:hover {
+    background-color: rgba(0, 0, 0, 0.06);
+    border-radius: 100%;
   }
 </style>
