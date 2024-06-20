@@ -14,7 +14,6 @@
   const itemsLine = ref([])
   const form = ref(null)
   const loading = ref(false)
-  const loadingCreatingProject = ref(false)
 
   const currentProjectName = ref('')
   const currentModel = ref('')
@@ -24,7 +23,7 @@
   const endpointGetModels = 'AssemblyDell/GetModels'
   const endpointGetAreas = 'AssemblyDell/GetAreas'
   const endpointGetLines = 'AssemblyDell/GetLines'
-  const endpointCreateSop = 'AssemblyDell/CreateSop'
+  const endpointCreate = 'AssemblyDell/CreateSop'
 
   const getModels = async () => {
     try {
@@ -32,7 +31,7 @@
 
       itemsModel.value = data.items.map((item) => ({
         ...item,
-        title: `${item.Model} - ${item.Description}`
+        title: `${item.Model} - ${item.Platform}`
       }))
     } catch (error) {
       itemsModel.value = []
@@ -80,7 +79,7 @@
     const { valid } = await form.value.validate()
     if (!valid) return
 
-    loadingCreatingProject.value = true
+    loading.value = true
     try {
       const data = {
         ProjectName: currentProjectName.value,
@@ -89,7 +88,7 @@
         LinesId: currentLines.value
       }
 
-      const response = await apiClient.post(endpointCreateSop, data)
+      const response = await apiClient.post(endpointCreate, data)
 
       showForm.value = false
       form.value.reset()
@@ -98,11 +97,9 @@
     } catch (error) {
       console.error(error)
     } finally {
-      loadingCreatingProject.value = false
+      loading.value = false
     }
   }
-
-  // onMounted(loadData)
 
   watch(showForm, (newValue) => {
     if (!newValue) form.value.reset()
@@ -113,7 +110,7 @@
 
 <template>
   <v-dialog
-    :persistent="loadingCreatingProject"
+    :persistent="loading"
     v-model="showForm"
     max-width="600"
   >
@@ -138,7 +135,7 @@
           variant="solo"
           label="Project name"
           :rules="[(value) => !!value || 'Project name is required']"
-          :disabled="loadingCreatingProject"
+          :disabled="loading"
         />
         <v-autocomplete
           v-model="currentModel"
@@ -148,7 +145,7 @@
           item-value="id"
           label="Models"
           :rules="[(value) => !!value || 'Model is required']"
-          :disabled="loadingCreatingProject"
+          :disabled="loading"
         />
         <v-autocomplete
           v-model="currentArea"
@@ -159,7 +156,7 @@
           item-value="id"
           label="Areas"
           :rules="[(value) => !!value || 'Area is required']"
-          :disabled="loadingCreatingProject"
+          :disabled="loading"
         />
         <v-autocomplete
           v-model="currentLines"
@@ -174,18 +171,18 @@
           :rules="[
             (value) => value.length > 0 || 'At least one line is required'
           ]"
-          :disabled="loadingCreatingProject"
+          :disabled="loading"
         />
         <v-card-actions class="justify-end">
           <v-btn
-            :disabled="loadingCreatingProject"
+            :disabled="loading"
             text="Cancel"
             @click.stop="showForm = false"
           />
           <v-btn
             text="Create project"
-            :disabled="loadingCreatingProject"
-            :loading="loadingCreatingProject"
+            :disabled="loading"
+            :loading="loading"
             type="submit"
             @click.stop="createProject"
           />

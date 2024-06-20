@@ -4,19 +4,19 @@
   import { convertDateProperties } from '@utils/dateUtils.js'
   import ConfirmPassword from '@components/ConfirmPassword.vue'
   import DataManagementTable from '@components/DataManagementTable.vue'
-  import CreateProjectForm from '@components/CreateProjectForm.vue'
+  import CreateModelForm from '@components/CreateModelForm.vue'
 
   const items = ref([])
   const headers = ref([])
-  const currentItem = ref({ assemblyDellSop: {} })
+  const currentItem = ref({ assemblyDellModel: {} })
   const loading = ref(false)
   const showCreate = ref(false)
   const showConfirmPassword = ref(false)
 
-  const endpointDelete = 'AssemblyDell/DeleteSop'
-  const endpointGet = 'AssemblyDell/GetSops'
+  const endpointDelete = 'AssemblyDell/DeleteModel'
+  const endpointGet = 'AssemblyDell/GetModels'
 
-  const getSops = async () => {
+  const getAreas = async () => {
     try {
       const { data } = await apiClient.get(endpointGet)
 
@@ -35,7 +35,7 @@
   const loadData = async () => {
     loading.value = true
     try {
-      await Promise.all([getSops()])
+      await Promise.all([getAreas()])
     } catch (error) {
       console.error(error.message)
     } finally {
@@ -44,7 +44,7 @@
   }
 
   const deleteItem = (item) => {
-    currentItem.value.assemblyDellSop.id = item
+    currentItem.value.assemblyDellModel.id = item
     showConfirmPassword.value = true
   }
 
@@ -58,14 +58,14 @@
     :data="currentItem"
     @success="loadData"
   />
-  <CreateProjectForm
+  <CreateModelForm
     v-model:showForm="showCreate"
     @success="loadData"
   />
   <DataManagementTable
     :items="items"
     :headers="headers"
-    text-add-button="Create Project"
+    text-add-button="Create model"
     v-model:loading="loading"
     v-model:showForm="showCreate"
     @delete-item="deleteItem"

@@ -11,9 +11,10 @@
 
   const form = ref(null)
   const loading = ref(false)
-  const currentArea = ref('')
+  const currentModel = ref('')
+  const currentPlatform = ref('')
 
-  const endpointCreate = 'AssemblyDell/CreateArea'
+  const endpointCreate = 'AssemblyDell/CreateModel'
 
   const createProject = async () => {
     const { valid } = await form.value.validate()
@@ -22,7 +23,8 @@
     loading.value = true
     try {
       const data = {
-        AreaName: currentArea.value
+        ModelName: currentModel.value,
+        Platform: currentPlatform.value
       }
 
       const response = await apiClient.post(endpointCreate, data)
@@ -54,7 +56,7 @@
         class="mb-n1"
         style="font-weight: bold"
       >
-        Create new area
+        Create new model
       </v-card-title>
       <v-card-subtitle class="mb-5">
         Please ensure all fields are filled out before proceeding.
@@ -65,11 +67,19 @@
       >
         <v-text-field
           autofocus
-          v-model="currentArea"
+          v-model="currentModel"
           class="mx-4 mb-2"
           variant="solo"
-          label="Area name"
-          :rules="[(value) => !!value || 'Area name is required']"
+          label="Model name"
+          :rules="[(value) => !!value || 'Model name is required']"
+          :disabled="loading"
+        />
+        <v-text-field
+          v-model="currentPlatform"
+          class="mx-4 mb-2"
+          variant="solo"
+          label="Platform name"
+          :rules="[(value) => !!value || 'Platform name is required']"
           :disabled="loading"
         />
         <v-card-actions class="justify-end">
@@ -79,7 +89,7 @@
             @click.stop="showForm = false"
           />
           <v-btn
-            text="Create area"
+            text="Create model"
             :disabled="loading"
             :loading="loading"
             type="submit"

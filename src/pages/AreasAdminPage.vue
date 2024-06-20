@@ -6,29 +6,27 @@
   import DataManagementTable from '@components/DataManagementTable.vue'
   import CreateAreaForm from '@components/CreateAreaForm.vue'
 
-  const itemsSop = ref([])
-  const headersSop = ref([])
-  const currentSop = ref({ assemblyDellArea: {} })
+  const items = ref([])
+  const headers = ref([])
+  const currentItem = ref({ assemblyDellArea: {} })
   const loading = ref(false)
-  const showCreateArea = ref(false)
+  const showCreate = ref(false)
   const showConfirmPassword = ref(false)
 
-  const endpointDeleteSops = 'AssemblyDell/DeleteArea'
-  const endpointGetAreas = 'AssemblyDell/GetAreas'
+  const endpointDelete = 'AssemblyDell/DeleteArea'
+  const endpointGet = 'AssemblyDell/GetAreas'
 
   const getAreas = async () => {
     try {
-      const { data } = await apiClient.get(endpointGetAreas)
+      const { data } = await apiClient.get(endpointGet)
 
-      itemsSop.value = convertDateProperties(data)
+      items.value = convertDateProperties(data)
 
-      headersSop.value = data.headers.filter(
-        (header) => header.visible === true
-      )
-      headersSop.value.push({ title: 'Actions', key: 'Actions' })
+      headers.value = data.headers.filter((header) => header.visible === true)
+      headers.value.push({ title: 'Actions', key: 'Actions' })
     } catch (error) {
-      itemsSop.value = []
-      headersSop.value = []
+      items.value = []
+      headers.value = []
 
       throw new Error(error)
     }
@@ -46,7 +44,7 @@
   }
 
   const deleteItem = (item) => {
-    currentSop.value.assemblyDellArea.id = item
+    currentItem.value.assemblyDellArea.id = item
     showConfirmPassword.value = true
   }
 
@@ -56,20 +54,20 @@
 <template>
   <ConfirmPassword
     v-model:showDialog="showConfirmPassword"
-    :endpoint="endpointDeleteSops"
-    :data="currentSop"
+    :endpoint="endpointDelete"
+    :data="currentItem"
     @success="loadData"
   />
   <CreateAreaForm
-    v-model:showForm="showCreateArea"
+    v-model:showForm="showCreate"
     @success="loadData"
   />
   <DataManagementTable
-    :items="itemsSop"
-    :headers="headersSop"
+    :items="items"
+    :headers="headers"
     text-add-button="Create area"
     v-model:loading="loading"
-    v-model:showForm="showCreateArea"
+    v-model:showForm="showCreate"
     @delete-item="deleteItem"
   />
 </template>
