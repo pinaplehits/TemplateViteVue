@@ -4,21 +4,21 @@
   import { convertDateProperties } from '@utils/dateUtils.js'
   import ConfirmPassword from '@components/ConfirmPassword.vue'
   import DataManagementTable from '@components/DataManagementTable.vue'
-  import CreateProjectForm from '@components/CreateProjectForm.vue'
+  import CreateAreaForm from '@components/CreateAreaForm.vue'
 
   const itemsSop = ref([])
   const headersSop = ref([])
-  const currentSop = ref({ assemblyDellSop: {} })
-  const loadingTable = ref(false)
-  const showCreateProject = ref(false)
+  const currentSop = ref({ assemblyDellArea: {} })
+  const loading = ref(false)
+  const showCreateArea = ref(false)
   const showConfirmPassword = ref(false)
 
-  const endpointDeleteSops = 'AssemblyDell/DeleteSop'
-  const endpointGetSops = 'AssemblyDell/GetSops'
+  const endpointDeleteSops = 'AssemblyDell/DeleteArea'
+  const endpointGetAreas = 'AssemblyDell/GetAreas'
 
-  const getSops = async () => {
+  const getAreas = async () => {
     try {
-      const { data } = await apiClient.get(endpointGetSops)
+      const { data } = await apiClient.get(endpointGetAreas)
 
       itemsSop.value = convertDateProperties(data)
 
@@ -35,18 +35,18 @@
   }
 
   const loadData = async () => {
-    loadingTable.value = true
+    loading.value = true
     try {
-      await Promise.all([getSops()])
+      await Promise.all([getAreas()])
     } catch (error) {
       console.error(error.message)
     } finally {
-      loadingTable.value = false
+      loading.value = false
     }
   }
 
   const deleteItem = (item) => {
-    currentSop.value.assemblyDellSop.id = item
+    currentSop.value.assemblyDellArea.id = item
     showConfirmPassword.value = true
   }
 
@@ -60,16 +60,16 @@
     :data="currentSop"
     @success="loadData"
   />
-  <CreateProjectForm
-    v-model:showForm="showCreateProject"
+  <CreateAreaForm
+    v-model:showForm="showCreateArea"
     @success="loadData"
   />
   <DataManagementTable
     :items="itemsSop"
     :headers="headersSop"
-    text-add-button="Create Project"
-    v-model:loading="loadingTable"
-    v-model:showForm="showCreateProject"
+    text-add-button="Create area"
+    v-model:loading="loading"
+    v-model:showForm="showCreateArea"
     @delete-item="deleteItem"
   />
 </template>

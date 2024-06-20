@@ -20,9 +20,15 @@ export default [
     component: () => import('@pages/NotFoundPage.vue')
   },
   {
-    path: '/esop',
-    name: 'Esop',
+    path: '/sops',
+    name: 'SOP',
     component: () => import('@pages/EsopAdminPage.vue'),
+    meta: { requiresAuthentication: true, showInNav: true }
+  },
+  {
+    path: '/areas',
+    name: 'Areas',
+    component: () => import('@pages/AreasAdminPage.vue'),
     meta: { requiresAuthentication: true, showInNav: true }
   }
 ]
