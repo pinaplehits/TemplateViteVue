@@ -32,15 +32,21 @@ export default [
     meta: { requiresAuthentication: true, showInNav: true }
   },
   {
-    path: '/Models',
+    path: '/models',
     name: 'Models',
     component: () => import('@pages/ModelsAdminPage.vue'),
     meta: { requiresAuthentication: true, showInNav: true }
   },
   {
-    path: '/Stations',
+    path: '/stations',
     name: 'Stations',
     component: () => import('@pages/StationsAdminPage.vue'),
+    meta: { requiresAuthentication: true, showInNav: true }
+  },
+  {
+    path: '/lines',
+    name: 'Lines',
+    component: () => import('@pages/LinesAdminPage.vue'),
     meta: { requiresAuthentication: true, showInNav: true }
   }
 ]

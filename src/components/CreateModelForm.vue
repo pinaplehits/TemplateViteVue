@@ -16,7 +16,7 @@
 
   const endpointCreate = 'AssemblyDell/CreateModel'
 
-  const createProject = async () => {
+  const createObject = async () => {
     const { valid } = await form.value.validate()
     if (!valid) return
 
@@ -93,7 +93,7 @@
             :disabled="loading"
             :loading="loading"
             type="submit"
-            @click.stop="createProject"
+            @click.stop="createObject"
           />
         </v-card-actions>
       </v-form>

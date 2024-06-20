@@ -11,18 +11,18 @@
 
   const form = ref(null)
   const loading = ref(false)
-  const currentLine = ref('')
+  const currentStation = ref('')
 
   const endpointCreate = 'AssemblyDell/CreateStation'
 
-  const createProject = async () => {
+  const createObject = async () => {
     const { valid } = await form.value.validate()
     if (!valid) return
 
     loading.value = true
     try {
       const data = {
-        StationName: currentLine.value
+        StationName: currentStation.value
       }
 
       const response = await apiClient.post(endpointCreate, data)
@@ -65,11 +65,11 @@
       >
         <v-text-field
           autofocus
-          v-model="currentLine"
+          v-model="currentStation"
           class="mx-4 mb-2"
           variant="solo"
-          label="Line name"
-          :rules="[(value) => !!value || 'Line name is required']"
+          label="Station name"
+          :rules="[(value) => !!value || 'Station name is required']"
           :disabled="loading"
         />
         <v-card-actions class="justify-end">
@@ -79,11 +79,11 @@
             @click.stop="showForm = false"
           />
           <v-btn
-            text="Create line"
+            text="Create station"
             :disabled="loading"
             :loading="loading"
             type="submit"
-            @click.stop="createProject"
+            @click.stop="createObject"
           />
         </v-card-actions>
       </v-form>
