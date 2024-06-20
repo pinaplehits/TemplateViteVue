@@ -4,7 +4,7 @@
   const loading = defineModel('loading', { type: Boolean, required: true })
   const showForm = defineModel('showForm', { type: Boolean, required: true })
 
-  const emit = defineEmits(['deleteItem', 'detailItem'])
+  const emit = defineEmits(['deleteItem', 'detailItem', 'uploadItem'])
 
   const props = defineProps({
     items: { type: Array, required: true },
@@ -114,7 +114,9 @@
                   />
                 </th>
               </template>
-              <template v-else-if="column.key === 'Actions'">
+              <template
+                v-else-if="column.key === 'Actions' || column.key === 'Upload'"
+              >
                 <th>
                   {{ column.title }}
                 </th>
@@ -164,6 +166,14 @@
                   >
                     mdi-delete
                   </v-icon>
+                </td>
+              </template>
+              <template v-else-if="column.key === 'Upload'">
+                <td style="text-align: center; width: 0px">
+                  <v-file-input
+                    hide-input
+                    accept=".pptx"
+                  />
                 </td>
               </template>
               <template v-else>

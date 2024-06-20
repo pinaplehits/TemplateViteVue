@@ -26,6 +26,12 @@ export default [
     meta: { requiresAuthentication: true, showInNav: true }
   },
   {
+    path: '/testing/',
+    name: 'SOP details',
+    component: () => import('@pages/SopDetails.vue'),
+    meta: { requiresAuthentication: true }
+  },
+  {
     path: '/areas',
     name: 'Areas',
     component: () => import('@pages/AreasAdminPage.vue'),
