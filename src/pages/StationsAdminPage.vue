@@ -4,17 +4,17 @@
   import { convertDateProperties } from '@utils/dateUtils.js'
   import ConfirmPassword from '@components/ConfirmPassword.vue'
   import DataManagementTable from '@components/DataManagementTable.vue'
-  import CreateModelForm from '@components/CreateModelForm.vue'
+  import CreateStationForm from '@components/CreateStationForm.vue'
 
   const items = ref([])
   const headers = ref([])
-  const currentItem = ref({ assemblyDellModel: {} })
+  const currentItem = ref({ assemblyDellStation: {} })
   const loading = ref(false)
   const showCreate = ref(false)
   const showConfirmPassword = ref(false)
 
-  const endpointDelete = 'AssemblyDell/DeleteModel'
-  const endpointGet = 'AssemblyDell/GetModels'
+  const endpointDelete = 'AssemblyDell/DeleteStation'
+  const endpointGet = 'AssemblyDell/GetStations'
 
   const populateTable = async () => {
     try {
@@ -44,7 +44,7 @@
   }
 
   const deleteItem = (item) => {
-    currentItem.value.assemblyDellModel.id = item
+    currentItem.value.assemblyDellStation.id = item
     showConfirmPassword.value = true
   }
 
@@ -58,14 +58,14 @@
     :data="currentItem"
     @success="loadData"
   />
-  <CreateModelForm
+  <CreateStationForm
     v-model:showForm="showCreate"
     @success="loadData"
   />
   <DataManagementTable
     :items="items"
     :headers="headers"
-    text-add-button="Create model"
+    text-add-button="Create station"
     v-model:loading="loading"
     v-model:showForm="showCreate"
     @delete-item="deleteItem"

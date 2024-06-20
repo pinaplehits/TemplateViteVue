@@ -36,5 +36,11 @@ export default [
     name: 'Models',
     component: () => import('@pages/ModelsAdminPage.vue'),
     meta: { requiresAuthentication: true, showInNav: true }
+  },
+  {
+    path: '/Stations',
+    name: 'Stations',
+    component: () => import('@pages/StationsAdminPage.vue'),
+    meta: { requiresAuthentication: true, showInNav: true }
   }
 ]

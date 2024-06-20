@@ -16,7 +16,7 @@
   const endpointDelete = 'AssemblyDell/DeleteSop'
   const endpointGet = 'AssemblyDell/GetSops'
 
-  const getSops = async () => {
+  const populateTable = async () => {
     try {
       const { data } = await apiClient.get(endpointGet)
 
@@ -35,7 +35,7 @@
   const loadData = async () => {
     loading.value = true
     try {
-      await Promise.all([getSops()])
+      await Promise.all([populateTable()])
     } catch (error) {
       console.error(error.message)
     } finally {
