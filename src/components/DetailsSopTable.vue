@@ -91,7 +91,6 @@
         fixed-header
         items-per-page="-1"
         hide-default-footer
-        density="compact"
         return-object
       >
         <template #loading>

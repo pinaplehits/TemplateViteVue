@@ -42,9 +42,9 @@
 
   const getAreas = async () => {
     try {
-      const { data } = await apiClient.get(endpointGetAreas)
+      const response = await apiClient.get(endpointGetAreas)
 
-      itemsArea.value = data.items
+      itemsArea.value = response.items
     } catch (error) {
       itemsArea.value = []
 
