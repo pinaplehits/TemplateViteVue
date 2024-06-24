@@ -10,6 +10,7 @@
   const emit = defineEmits(['success'])
 
   const form = ref(null)
+  const errorMessage = ref(null)
   const loading = ref(false)
   const currentModel = ref('')
   const currentPlatform = ref('')
@@ -34,14 +35,17 @@
 
       emit('success', response)
     } catch (error) {
-      console.error(error)
+      errorMessage.value = error
     } finally {
       loading.value = false
     }
   }
 
   watch(showForm, (newValue) => {
-    if (!newValue) form.value.reset()
+    if (!newValue) {
+      errorMessage.value = null
+      form.value.reset()
+    }
   })
 </script>
 
@@ -76,12 +80,18 @@
         />
         <v-text-field
           v-model="currentPlatform"
-          class="mx-4 mb-2"
+          class="mx-4"
           variant="solo"
           label="Platform name"
           :rules="[(value) => !!value || 'Platform name is required']"
           :disabled="loading"
         />
+        <v-card-text
+          v-if="errorMessage"
+          style="color: #b00020"
+        >
+          {{ errorMessage }}
+        </v-card-text>
         <v-card-actions class="justify-end">
           <v-btn
             :disabled="loading"

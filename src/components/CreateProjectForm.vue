@@ -13,6 +13,7 @@
   const itemsArea = ref([])
   const itemsLine = ref([])
   const form = ref(null)
+  const errorMessage = ref(null)
   const loading = ref(false)
 
   const currentProjectName = ref('')
@@ -26,43 +27,21 @@
   const endpointCreate = 'AssemblyDell/CreateSop'
 
   const getModels = async () => {
-    try {
-      const { data } = await apiClient.get(endpointGetModels)
+    const { items } = await apiClient.get(endpointGetModels)
 
-      itemsModel.value = data.items.map((item) => ({
-        ...item,
-        title: `${item.Model} - ${item.Platform}`
-      }))
-    } catch (error) {
-      itemsModel.value = []
+    if (!items) return
 
-      throw new Error(error)
-    }
+    itemsModel.value = items.map((item) => ({
+      ...item,
+      title: `${item.Model} - ${item.Platform}`
+    }))
   }
 
-  const getAreas = async () => {
-    try {
-      const response = await apiClient.get(endpointGetAreas)
+  const getAreas = async () =>
+    (itemsArea.value = (await apiClient.get(endpointGetAreas)).items)
 
-      itemsArea.value = response.items
-    } catch (error) {
-      itemsArea.value = []
-
-      throw new Error(error)
-    }
-  }
-
-  const getLines = async () => {
-    try {
-      const { data } = await apiClient.get(endpointGetLines)
-
-      itemsLine.value = data.items
-    } catch (error) {
-      itemsLine.value = []
-
-      throw new Error(error)
-    }
-  }
+  const getLines = async () =>
+    (itemsLine.value = (await apiClient.get(endpointGetLines)).data.items)
 
   const loadData = async () => {
     loading.value = true
@@ -95,14 +74,17 @@
 
       emit('success', response)
     } catch (error) {
-      console.error(error)
+      errorMessage.value = error
     } finally {
       loading.value = false
     }
   }
 
   watch(showForm, (newValue) => {
-    if (!newValue) form.value.reset()
+    if (!newValue) {
+      errorMessage.value = null
+      form.value.reset()
+    }
 
     if (newValue) loadData()
   })
@@ -173,6 +155,12 @@
           ]"
           :disabled="loading"
         />
+        <v-card-text
+          v-if="errorMessage"
+          style="color: #b00020"
+        >
+          {{ errorMessage }}
+        </v-card-text>
         <v-card-actions class="justify-end">
           <v-btn
             :disabled="loading"

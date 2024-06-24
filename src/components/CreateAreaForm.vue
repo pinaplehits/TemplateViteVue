@@ -10,6 +10,7 @@
   const emit = defineEmits(['success'])
 
   const form = ref(null)
+  const errorMessage = ref(null)
   const loading = ref(false)
   const currentArea = ref('')
 
@@ -32,7 +33,7 @@
 
       emit('success', response)
     } catch (error) {
-      console.error(error)
+      errorMessage.value = error
     } finally {
       loading.value = false
     }
@@ -71,6 +72,7 @@
           label="Area name"
           :rules="[(value) => !!value || 'Area name is required']"
           :disabled="loading"
+          :error-messages="errorMessage"
         />
         <v-card-actions class="justify-end">
           <v-btn

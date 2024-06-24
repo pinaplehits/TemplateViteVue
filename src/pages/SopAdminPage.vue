@@ -18,7 +18,7 @@
   const loadData = async () => {
     loading.value = true
     try {
-      const [response] = await Promise.all([populateAdminTable(endpointGet)])
+      const response = await populateAdminTable(endpointGet)
 
       items.value = response.items
       headers.value = response.headers
