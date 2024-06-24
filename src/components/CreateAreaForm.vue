@@ -17,6 +17,7 @@
   const endpointCreate = 'AssemblyDell/CreateArea'
 
   const createObject = async () => {
+    errorMessage.value = null
     const { valid } = await form.value.validate()
     if (!valid) return
 
@@ -67,7 +68,7 @@
         <v-text-field
           autofocus
           v-model="currentArea"
-          class="mx-4 mb-2"
+          class="mx-4"
           variant="solo"
           label="Area name"
           :rules="[(value) => !!value || 'Area name is required']"

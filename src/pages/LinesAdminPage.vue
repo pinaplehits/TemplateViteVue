@@ -1,7 +1,6 @@
 <script setup>
   import { ref, onMounted } from 'vue'
-  import apiClient from '@utils/axiosConfig.js'
-  import { convertDateProperties } from '@utils/dateUtils.js'
+  import { populateAdminTable } from '@utils/tableUtils'
   import ConfirmPassword from '@components/ConfirmPassword.vue'
   import DataManagementTable from '@components/DataManagementTable.vue'
   import CreateLineForm from '@components/CreateLineForm.vue'
@@ -16,26 +15,13 @@
   const endpointDelete = 'AssemblyDell/DeleteLine'
   const endpointGet = 'AssemblyDell/GetLines'
 
-  const populateTable = async () => {
-    try {
-      const { data } = await apiClient.get(endpointGet)
-
-      items.value = convertDateProperties(data)
-
-      headers.value = data.headers.filter((header) => header.visible === true)
-      headers.value.push({ title: 'Actions', key: 'Actions' })
-    } catch (error) {
-      items.value = []
-      headers.value = []
-
-      throw new Error(error)
-    }
-  }
-
   const loadData = async () => {
     loading.value = true
     try {
-      await Promise.all([populateTable()])
+      const response = await populateAdminTable(endpointGet)
+
+      items.value = response.items
+      headers.value = response.headers
     } catch (error) {
       console.error(error.message)
     } finally {

@@ -10,19 +10,23 @@
   const emit = defineEmits(['success'])
 
   const form = ref(null)
+  const errorMessage = ref('')
   const loading = ref(false)
   const currentLine = ref('')
+  const currentType = ref('')
 
   const endpointCreate = 'AssemblyDell/CreateLine'
 
   const createObject = async () => {
+    errorMessage.value = null
     const { valid } = await form.value.validate()
     if (!valid) return
 
     loading.value = true
     try {
       const data = {
-        LineName: currentLine.value
+        LineName: currentLine.value,
+        Type: currentType.value
       }
 
       const response = await apiClient.post(endpointCreate, data)
@@ -32,14 +36,17 @@
 
       emit('success', response)
     } catch (error) {
-      console.error(error)
+      errorMessage.value = error
     } finally {
       loading.value = false
     }
   }
 
   watch(showForm, (newValue) => {
-    if (!newValue) form.value.reset()
+    if (!newValue) {
+      errorMessage.value = null
+      form.value.reset()
+    }
   })
 </script>
 
@@ -72,6 +79,20 @@
           :rules="[(value) => !!value || 'Line name is required']"
           :disabled="loading"
         />
+        <v-text-field
+          v-model="currentType"
+          class="mx-4"
+          variant="solo"
+          label="Type"
+          :rules="[(value) => !!value || 'Type is required']"
+          :disabled="loading"
+        />
+        <v-card-text
+          v-if="errorMessage"
+          style="color: #b00020"
+        >
+          {{ errorMessage }}
+        </v-card-text>
         <v-card-actions class="justify-end">
           <v-btn
             :disabled="loading"

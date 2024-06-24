@@ -41,7 +41,7 @@
     (itemsArea.value = (await apiClient.get(endpointGetAreas)).items)
 
   const getLines = async () =>
-    (itemsLine.value = (await apiClient.get(endpointGetLines)).data.items)
+    (itemsLine.value = (await apiClient.get(endpointGetLines)).items)
 
   const loadData = async () => {
     loading.value = true

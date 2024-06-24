@@ -17,6 +17,7 @@
   const endpointCreate = 'AssemblyDell/CreateStation'
 
   const createObject = async () => {
+    errorMessage.value = null
     const { valid } = await form.value.validate()
     if (!valid) return
 
@@ -70,7 +71,7 @@
         <v-text-field
           autofocus
           v-model="currentStation"
-          class="mx-4 mb-2"
+          class="mx-4"
           variant="solo"
           label="Station name"
           :rules="[(value) => !!value || 'Station name is required']"

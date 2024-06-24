@@ -18,6 +18,7 @@
   const endpointCreate = 'AssemblyDell/CreateModel'
 
   const createObject = async () => {
+    errorMessage.value = null
     const { valid } = await form.value.validate()
     if (!valid) return
 
