@@ -10,6 +10,7 @@
   const emit = defineEmits(['success'])
 
   const form = ref(null)
+  const errorMessage = ref(null)
   const loading = ref(false)
   const currentStation = ref('')
 
@@ -32,14 +33,17 @@
 
       emit('success', response)
     } catch (error) {
-      console.error(error)
+      errorMessage.value = error
     } finally {
       loading.value = false
     }
   }
 
   watch(showForm, (newValue) => {
-    if (!newValue) form.value.reset()
+    if (!newValue) {
+      errorMessage.value = null
+      form.value.reset()
+    }
   })
 </script>
 
@@ -71,6 +75,7 @@
           label="Station name"
           :rules="[(value) => !!value || 'Station name is required']"
           :disabled="loading"
+          :error-messages="errorMessage"
         />
         <v-card-actions class="justify-end">
           <v-btn
