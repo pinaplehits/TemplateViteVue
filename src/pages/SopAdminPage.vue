@@ -4,6 +4,7 @@
   import ConfirmPassword from '@components/ConfirmPassword.vue'
   import DataManagementTable from '@components/DataManagementTable.vue'
   import CreateProjectForm from '@components/CreateProjectForm.vue'
+  import router from '@router/index.js'
 
   const items = ref([])
   const headers = ref([])
@@ -35,7 +36,7 @@
   }
 
   const detailItem = (item) => {
-    console.log(item)
+    router.push({ name: 'SOP details', params: { id: item } })
   }
 
   onMounted(loadData)

@@ -26,7 +26,7 @@ export default [
     meta: { requiresAuthentication: true, showInNav: true }
   },
   {
-    path: '/testing/',
+    path: '/sops/:id',
     name: 'SOP details',
     component: () => import('@pages/SopDetails.vue'),
     meta: { requiresAuthentication: true }
