@@ -10,7 +10,7 @@
   const items = ref([])
   const headers = ref([])
   const stations = ref([])
-  const currentItem = ref({ assemblyDellSopStation: {} })
+  const currentItem = ref({ assemblyDellStationSop: {} })
   const loading = ref(false)
   const showConfirmPassword = ref(false)
 
@@ -66,7 +66,8 @@
   }
 
   const deleteItem = (item) => {
-    currentItem.value.assemblyDellSopStation.id = item
+    currentItem.value.assemblyDellStationSop.idStation = item
+    currentItem.value.assemblyDellStationSop.idSop = idSop.value
     showConfirmPassword.value = true
   }
 
