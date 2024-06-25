@@ -1,44 +1,63 @@
 <script setup>
   import { ref, onMounted } from 'vue'
+  import { populateAdminTable } from '@utils/tableUtils'
   import apiClient from '@utils/axiosConfig.js'
-  import { convertDateProperties } from '@utils/dateUtils.js'
   import ConfirmPassword from '@components/ConfirmPassword.vue'
   import DetailsSopTable from '@components/DetailsSopTable.vue'
-  import CreateProjectForm from '@components/CreateProjectForm.vue'
   import UpdateProjectForm from '@components/UpdateProjectForm.vue'
+  import { useRoute } from 'vue-router'
 
   const items = ref([])
   const headers = ref([])
-  const currentItem = ref({ assemblyDellSop: {} })
+  const stations = ref([])
+  const currentItem = ref({ assemblyDellSopStation: {} })
   const loading = ref(false)
-  const showCreate = ref(false)
   const showConfirmPassword = ref(false)
 
+  const idSop = ref(useRoute().params.id)
+
+  const endpointAddStationToSop = 'AssemblyDell/AddStationToSop'
   const endpointDelete = 'AssemblyDell/DeleteStationInSop'
-  const endpointGet = 'AssemblyDell/GetStations'
+  const endpointGetStationsNotInSop = `AssemblyDell/GetStationsNotInSop/${idSop.value}`
+  const endpointGetStationsInSop = `AssemblyDell/GetSopDetails/${idSop.value}`
 
-  const populateTable = async () => {
-    try {
-      const { data } = await apiClient.get(endpointGet)
+  const getStationsInSop = async () => {
+    const response = await populateAdminTable(endpointGetStationsInSop)
 
-      items.value = convertDateProperties(data)
+    if (!response.headers) return
 
-      headers.value = data.headers.filter((header) => header.visible === true)
+    items.value = response.items
+    headers.value = response.headers
 
-      headers.value.push({ title: 'Actions', key: 'Actions' })
-      headers.value.push({ title: 'Upload', key: 'Upload' })
-    } catch (error) {
-      items.value = []
-      headers.value = []
+    const fileTransferActions = [
+      { title: 'Download', key: 'Download' },
+      { title: 'Upload', key: 'Upload' }
+    ]
 
-      throw new Error(error)
+    const actionsIndex = headers.value.findIndex(
+      (header) => header.title === 'Actions'
+    )
+
+    if (actionsIndex !== -1) {
+      headers.value.splice(actionsIndex, 0, ...fileTransferActions)
+      return
     }
+
+    headers.value.push(...fileTransferActions)
+  }
+
+  const getStationsNotInSop = async () => {
+    const response = await apiClient.get(endpointGetStationsNotInSop)
+
+    if (!response.items) return
+
+    stations.value = response.items
   }
 
   const loadData = async () => {
     loading.value = true
     try {
-      await Promise.all([populateTable()])
+      await Promise.all([getStationsInSop(), getStationsNotInSop()])
     } catch (error) {
       console.error(error.message)
     } finally {
@@ -47,7 +66,7 @@
   }
 
   const deleteItem = (item) => {
-    currentItem.value.assemblyDellSop.id = item
+    currentItem.value.assemblyDellSopStation.id = item
     showConfirmPassword.value = true
   }
 
@@ -65,18 +84,20 @@
     :data="currentItem"
     @success="loadData"
   />
-  <CreateProjectForm
-    v-model:showForm="showCreate"
+  <UpdateProjectForm
+    :sop-details="items"
     @success="loadData"
   />
-  <UpdateProjectForm @success="loadData" />
   <DetailsSopTable
     :items="items"
     :headers="headers"
+    :stations="stations"
+    :endpoint-add-station="endpointAddStationToSop"
+    :station-id="idSop"
     text-add-button="Add station"
     v-model:loading="loading"
-    v-model:showForm="showCreate"
     @delete-item="deleteItem"
     @detail-item="detailItem"
+    @add-station-success="loadData"
   />
 </template>

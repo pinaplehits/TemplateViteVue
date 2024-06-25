@@ -1,21 +1,45 @@
 <script setup>
   import { ref, watch } from 'vue'
+  import apiClient from '@utils/axiosConfig.js'
 
   const loading = defineModel('loading', { type: Boolean, required: true })
-  const showForm = defineModel('showForm', { type: Boolean, required: true })
 
-  const emit = defineEmits(['deleteItem', 'detailItem', 'uploadItem'])
+  const emit = defineEmits(['deleteItem', 'detailItem', 'addStationSuccess'])
 
   const props = defineProps({
     items: { type: Array, required: true },
     headers: { type: Array, required: true },
+    stations: { type: Array, required: true },
+    stationId: { type: String, required: true },
+    endpointAddStation: { type: String, required: true },
     textAddButton: { type: String, default: 'Add' }
   })
 
   const sortBy = ref([])
   const selected = ref([])
   const search = ref('')
+  const loadingAddStation = ref(false)
   const searchFocused = ref(false)
+  const currentStations = ref([])
+
+  const addStation = async () => {
+    loadingAddStation.value = true
+    try {
+      const data = {
+        SopId: props.stationId,
+        StationsId: currentStations.value
+      }
+
+      const response = await apiClient.post(props.endpointAddStation, data)
+
+      currentStations.value = []
+      emit('addStationSuccess', response)
+    } catch (error) {
+      console.error(error)
+    } finally {
+      loadingAddStation.value = false
+    }
+  }
 
   const toggleSort = (key) => {
     let order = 'asc'
@@ -69,10 +93,26 @@
             />
           </v-col>
           <v-spacer />
+          <v-col>
+            <v-autocomplete
+              v-model="currentStations"
+              chips
+              multiple
+              class="mr-4"
+              variant="solo"
+              item-title="Station"
+              item-value="id"
+              :items="props.stations"
+              label="Stations"
+              :disabled="loading"
+            />
+          </v-col>
           <v-col cols="auto">
             <v-btn
+              :disabled="currentStations.length === 0 || loadingAddStation"
               color="primary"
-              @click.stop="showForm = true"
+              :loading="loading"
+              @click.stop="addStation"
               :text="props.textAddButton"
             />
           </v-col>
@@ -168,11 +208,8 @@
                 </td>
               </template>
               <template v-else-if="column.key === 'Upload'">
-                <td style="text-align: center; width: 0px">
-                  <v-file-input
-                    hide-input
-                    accept=".pptx"
-                  />
+                <td>
+                  <v-file-input accept=".pptx" />
                 </td>
               </template>
               <template v-else>
@@ -190,7 +227,7 @@
 
 <style scoped>
   .v-data-table {
-    height: calc(98vh - 165px);
+    height: calc(95vh - 165px);
   }
 
   :deep(th) {

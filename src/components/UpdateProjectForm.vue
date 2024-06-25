@@ -3,14 +3,18 @@
   import apiClient from '@utils/axiosConfig.js'
   import router from '@router/index.js'
 
+  const props = defineProps({
+    sopDetails: { type: Object, required: true }
+  })
+
   const emit = defineEmits(['success'])
 
   const itemsModel = ref([])
   const itemsArea = ref([])
   const itemsLine = ref([])
   const form = ref(null)
+  const errorMessage = ref(null)
   const loading = ref(false)
-  const changesMade = ref(true)
 
   const currentProjectName = ref('')
   const currentModel = ref('')
@@ -20,46 +24,24 @@
   const endpointGetModels = 'AssemblyDell/GetModels'
   const endpointGetAreas = 'AssemblyDell/GetAreas'
   const endpointGetLines = 'AssemblyDell/GetLines'
-  const endpointCreate = 'AssemblyDell/CreateSop'
+  const endpointUpdate = 'AssemblyDell/UpdateSop'
 
   const getModels = async () => {
-    try {
-      const { data } = await apiClient.get(endpointGetModels)
+    const { items } = await apiClient.get(endpointGetModels)
 
-      itemsModel.value = data.items.map((item) => ({
-        ...item,
-        title: `${item.Model} - ${item.Platform}`
-      }))
-    } catch (error) {
-      itemsModel.value = []
+    if (!items) return
 
-      throw new Error(error)
-    }
+    itemsModel.value = items.map((item) => ({
+      ...item,
+      title: `${item.Model} - ${item.Platform}`
+    }))
   }
 
-  const getAreas = async () => {
-    try {
-      const { data } = await apiClient.get(endpointGetAreas)
+  const getAreas = async () =>
+    (itemsArea.value = (await apiClient.get(endpointGetAreas)).items)
 
-      itemsArea.value = data.items
-    } catch (error) {
-      itemsArea.value = []
-
-      throw new Error(error)
-    }
-  }
-
-  const getLines = async () => {
-    try {
-      const { data } = await apiClient.get(endpointGetLines)
-
-      itemsLine.value = data.items
-    } catch (error) {
-      itemsLine.value = []
-
-      throw new Error(error)
-    }
-  }
+  const getLines = async () =>
+    (itemsLine.value = (await apiClient.get(endpointGetLines)).items)
 
   const loadData = async () => {
     loading.value = true
@@ -85,13 +67,13 @@
         LinesId: currentLines.value
       }
 
-      const response = await apiClient.post(endpointCreate, data)
+      const response = await apiClient.post(endpointUpdate, data)
 
       form.value.reset()
 
       emit('success', response)
     } catch (error) {
-      console.error(error)
+      errorMessage.value = error
     } finally {
       loading.value = false
     }
@@ -105,11 +87,8 @@
     class="px-2 py-2 mx-4"
     min-width="450"
   >
-    <v-card-title
-      class="mb-n1"
-      style="font-weight: bold"
-    >
-      Update
+    <v-card-title style="font-weight: bold">
+      Update SOP {{ props.sopDetails[0]?.Project }}
     </v-card-title>
     <v-form
       ref="form"
@@ -160,6 +139,12 @@
         ]"
         :disabled="loading"
       />
+      <v-card-text
+        v-if="errorMessage"
+        style="color: #b00020"
+      >
+        {{ errorMessage }}
+      </v-card-text>
       <v-card-actions class="justify-end">
         <v-btn
           :disabled="loading"
@@ -168,7 +153,7 @@
         />
         <v-btn
           text="Update"
-          :disabled="loading || changesMade"
+          :disabled="loading"
           :loading="loading"
           color="primary"
           type="submit"
