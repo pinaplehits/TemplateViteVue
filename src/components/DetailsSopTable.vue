@@ -4,13 +4,13 @@
 
   const loading = defineModel('loading', { type: Boolean, required: true })
 
-  const emit = defineEmits(['deleteItem', 'detailItem', 'addStationSuccess'])
+  const emit = defineEmits(['deleteItem', 'addStationSuccess'])
 
   const props = defineProps({
     items: { type: Array, required: true },
     headers: { type: Array, required: true },
     stations: { type: Array, required: true },
-    stationId: { type: String, required: true },
+    idSop: { type: String, required: true },
     endpointAddStation: { type: String, required: true },
     textAddButton: { type: String, default: 'Add' }
   })
@@ -19,14 +19,42 @@
   const selected = ref([])
   const search = ref('')
   const loadingAddStation = ref(false)
+  const loadingFileUpload = ref(false)
   const searchFocused = ref(false)
   const currentStations = ref([])
+  const fileSelected = ref({})
+
+  const uploadFile = async (file, idStation) => {
+    if (!file) {
+      console.error('No file selected')
+      return
+    }
+
+    loadingFileUpload.value = true
+    const formData = new FormData()
+    formData.append('PowerPoint', file)
+    formData.append('IdStation', idStation)
+    formData.append('IdSop', props.idSop)
+
+    try {
+      await apiClient.post('AssemblyDell/SlidesToImages', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      })
+      fileSelected.value[idStation] = null
+    } catch (error) {
+      console.error('Error uploading file', error)
+    } finally {
+      loadingFileUpload.value = false
+    }
+  }
 
   const addStation = async () => {
     loadingAddStation.value = true
     try {
       const data = {
-        SopId: props.stationId,
+        SopId: props.idSop,
         StationsId: currentStations.value
       }
 
@@ -179,10 +207,7 @@
           </tr>
         </template>
         <template #item="{ item, columns }">
-          <tr
-            @click="() => emit('detailItem', item.id)"
-            class="cursor-pointer"
-          >
+          <tr>
             <template
               v-for="column in columns"
               :key="column.key"
@@ -209,7 +234,31 @@
               </template>
               <template v-else-if="column.key === 'Upload'">
                 <td>
-                  <v-file-input accept=".pptx" />
+                  <v-file-input
+                    v-model="fileSelected[item.id]"
+                    class="mt-2 mb-n3"
+                    accept=".pptx"
+                    variant="outlined"
+                    prepend-icon=""
+                    chips
+                    density="compact"
+                    :prepend-inner-icon="
+                      fileSelected[item.id]
+                        ? ''
+                        : 'mdi-file-document-plus-outline'
+                    "
+                    :append-icon="
+                      fileSelected[item.id] ? 'mdi-file-upload-outline' : ''
+                    "
+                    @click:append="
+                      fileSelected[item.id] &&
+                        uploadFile(fileSelected[item.id], item.id)
+                    "
+                    max-width="300"
+                    color="primary"
+                    :disabled="loadingFileUpload"
+                    :loading="loadingFileUpload"
+                  />
                 </td>
               </template>
               <template v-else>

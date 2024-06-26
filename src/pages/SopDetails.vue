@@ -71,10 +71,6 @@
     showConfirmPassword.value = true
   }
 
-  const detailItem = (item) => {
-    console.log(item)
-  }
-
   onMounted(loadData)
 </script>
 
@@ -94,11 +90,10 @@
     :headers="headers"
     :stations="stations"
     :endpoint-add-station="endpointAddStationToSop"
-    :station-id="idSop"
+    :id-sop="idSop"
     text-add-button="Add station"
     v-model:loading="loading"
     @delete-item="deleteItem"
-    @detail-item="detailItem"
     @add-station-success="loadData"
   />
 </template>
