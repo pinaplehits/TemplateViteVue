@@ -27,7 +27,7 @@
     if (!response.headers) return
 
     items.value = response.items
-    headers.value = response.headers
+    headers.value = response.headers.filter((header) => header.key !== 'Images')
 
     const fileTransferActions = [
       { title: 'Download', key: 'Download' },
@@ -95,5 +95,6 @@
     v-model:loading="loading"
     @delete-item="deleteItem"
     @add-station-success="loadData"
+    @upload-file-success="loadData"
   />
 </template>

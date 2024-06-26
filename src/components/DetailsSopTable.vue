@@ -4,7 +4,11 @@
 
   const loading = defineModel('loading', { type: Boolean, required: true })
 
-  const emit = defineEmits(['deleteItem', 'addStationSuccess'])
+  const emit = defineEmits([
+    'deleteItem',
+    'addStationSuccess',
+    'uploadFileSuccess'
+  ])
 
   const props = defineProps({
     items: { type: Array, required: true },
@@ -24,6 +28,44 @@
   const currentStations = ref([])
   const fileSelected = ref({})
 
+  const showDialog = ref(false)
+  const images = ref()
+
+  const downloadSop = async (idStation) => {
+    // TODO: move rootFolder to a pinia global variable
+    let rootFolder
+    if (import.meta.env.MODE === 'development') {
+      rootFolder = 'devdata'
+    } else {
+      rootFolder = 'data'
+    }
+
+    const url = `https://localhost:3000/${rootFolder}/SOP/AssemblyDell/${props.idSop}/${idStation}/${props.idSop}-${idStation}.pptx`
+
+    window.open(url, '_blank')
+  }
+
+  const showImages = async (idStation) => {
+    let rootFolder
+    if (import.meta.env.MODE === 'development') {
+      rootFolder = 'devdata'
+    } else {
+      rootFolder = 'data'
+    }
+    const url = `https://localhost:3000/${rootFolder}/SOP/AssemblyDell/${props.idSop}/${idStation}/`
+
+    images.value = props.items
+      .find((item) => item.id === idStation)
+      ?.Images.split(',')
+      .map((imagen) => ({ src: `${url}${imagen}` }))
+
+    try {
+      showDialog.value = true
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
   const uploadFile = async (file, idStation) => {
     if (!file) {
       console.error('No file selected')
@@ -37,12 +79,18 @@
     formData.append('IdSop', props.idSop)
 
     try {
-      await apiClient.post('AssemblyDell/SlidesToImages', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data'
+      const response = await apiClient.post(
+        'AssemblyDell/SlidesToImages',
+        formData,
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          }
         }
-      })
+      )
       fileSelected.value[idStation] = null
+
+      emit('uploadFileSuccess', response)
     } catch (error) {
       console.error('Error uploading file', error)
     } finally {
@@ -99,6 +147,23 @@
 </script>
 
 <template>
+  <v-dialog
+    v-model="showDialog"
+    max-width="1050"
+  >
+    <v-carousel
+      height="100%"
+      width="100%"
+      show-arrows="hover"
+      cycle
+    >
+      <v-carousel-item
+        v-for="(item, i) in images"
+        :key="i"
+        :src="item.src"
+      />
+    </v-carousel>
+  </v-dialog>
   <v-container fill-height>
     <v-card>
       <v-container>
@@ -229,6 +294,30 @@
                     @click.stop="() => emit('deleteItem', item.id)"
                   >
                     mdi-delete
+                  </v-icon>
+                </td>
+              </template>
+              <template v-else-if="column.key === 'Images'">
+                <td>
+                  <v-icon
+                    color="green"
+                    class="cursor-pointer"
+                    v-show="item.Images.length > 0"
+                    @click.stop="showImages(item.id)"
+                  >
+                    mdi-image-multiple-outline
+                  </v-icon>
+                </td>
+              </template>
+              <template v-else-if="column.key === 'Download'">
+                <td>
+                  <v-icon
+                    color="primary"
+                    class="cursor-pointer"
+                    v-show="item.Images.length > 0"
+                    @click.stop="downloadSop(item.id)"
+                  >
+                    mdi-cloud-download-outline
                   </v-icon>
                 </td>
               </template>
