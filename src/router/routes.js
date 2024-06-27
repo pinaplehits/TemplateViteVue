@@ -54,5 +54,11 @@ export default [
     name: 'Lines',
     component: () => import('@pages/LinesAdminPage.vue'),
     meta: { requiresAuthentication: true, showInNav: true }
+  },
+  {
+    path: '/production',
+    name: 'Production',
+    component: () => import('@pages/ProductionPage.vue'),
+    meta: { requiresAuthentication: true, showInNav: true }
   }
 ]

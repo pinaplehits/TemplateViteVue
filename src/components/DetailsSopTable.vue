@@ -247,7 +247,12 @@
                 </th>
               </template>
               <template
-                v-else-if="column.key === 'Actions' || column.key === 'Upload'"
+                v-else-if="
+                  column.key === 'Actions' ||
+                  column.key === 'Upload' ||
+                  column.key === 'Download' ||
+                  column.key === 'Images'
+                "
               >
                 <th>
                   {{ column.title }}
