@@ -16,6 +16,12 @@ export const getFormattedDateForBuild = () => {
   return `${year}${month}${day}-${hours}${minutes}${seconds}`
 }
 
+/**
+ * Format a given date string into "DD/MM/YYYY HH:MM:SS".
+ *
+ * @param {string} dateString - The date string to be formatted.
+ * @returns {string} The formatted date string.
+ */
 export const formatDate = (dateString) => {
   const date = new Date(dateString)
 
@@ -30,6 +36,12 @@ export const formatDate = (dateString) => {
   return `${day}/${month}/${year} ${hours}:${minutes}:${seconds}`
 }
 
+/**
+ * Convert date properties in the given data object using a specific format.
+ *
+ * @param {Object} data - The data object containing items and properties.
+ * @returns {Array} An array of items with converted date properties.
+ */
 export const convertDateProperties = (data) => {
   return data.items.map((item) => {
     for (const [key, type] of Object.entries(data.properties)) {

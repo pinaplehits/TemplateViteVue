@@ -1,6 +1,12 @@
 import apiClient from './axiosConfig.js'
 import { convertDateProperties } from './dateUtils.js'
 
+/**
+ * Fetch data from the given endpoint and populate the admin table with items and headers.
+ *
+ * @param {string} endpointGet - The endpoint URL to fetch data from.
+ * @returns {Promise<{items: Array, headers: Array}>} An object containing the items and headers for the admin table.
+ */
 export async function populateAdminTable(endpointGet) {
   const response = await apiClient.get(endpointGet)
   let items = []
