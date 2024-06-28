@@ -1,6 +1,7 @@
 <script setup>
   import { ref, onMounted, watch, onUnmounted } from 'vue'
   import apiClient from '@utils/axiosConfig.js'
+  import { mapImagesToUrls } from '@utils/imageUtils.js'
 
   const currentArea = ref(null)
   const itemsArea = ref([])
@@ -55,27 +56,17 @@
         IdStation: currentStation.value
       }
 
-      const response = await apiClient.post(endpointSearchSop, data)
-
-      response.items[0].Images = response.items[0].Images.split(',')
-        .sort((a, b) => parseInt(a) - parseInt(b))
-        .join(',')
-
-      console.log(response.items[0])
-
       let rootFolder
       if (import.meta.env.MODE === 'development') {
         rootFolder = 'devdata'
       } else {
         rootFolder = 'data'
       }
+
+      const response = await apiClient.post(endpointSearchSop, data)
       const url = `${import.meta.env.VITE_STATIC_FILES}/${rootFolder}/SOP/AssemblyDell/${response.items[0].IdDoc}/${response.items[0].IdStation}/`
 
-      images.value = response.items[0].Images.split(',').map((imagen) => ({
-        src: `${url}${imagen}`
-      }))
-
-      console.log(images.value)
+      images.value = mapImagesToUrls(response.items[0].Images, url)
 
       isFullscreen.value = true
     } catch (error) {

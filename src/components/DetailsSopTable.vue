@@ -1,6 +1,7 @@
 <script setup>
   import { ref, watch } from 'vue'
   import apiClient from '@utils/axiosConfig.js'
+  import { mapImagesToUrls } from '@utils/imageUtils.js'
 
   const loading = defineModel('loading', { type: Boolean, required: true })
 
@@ -54,10 +55,10 @@
     }
     const url = `${import.meta.env.VITE_STATIC_FILES}/${rootFolder}/SOP/AssemblyDell/${props.idSop}/${idStation}/`
 
-    images.value = props.items
-      .find((item) => item.id === idStation)
-      ?.Images.split(',')
-      .map((imagen) => ({ src: `${url}${imagen}` }))
+    images.value = mapImagesToUrls(
+      props.items.find((item) => item.id === idStation).Images,
+      url
+    )
 
     try {
       showDialog.value = true
@@ -250,9 +251,9 @@
               <template
                 v-else-if="
                   column.key === 'Actions' ||
-                    column.key === 'Upload' ||
-                    column.key === 'Download' ||
-                    column.key === 'Images'
+                  column.key === 'Upload' ||
+                  column.key === 'Download' ||
+                  column.key === 'Images'
                 "
               >
                 <th>
