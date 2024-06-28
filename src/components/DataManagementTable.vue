@@ -48,7 +48,7 @@
 
 <template>
   <v-container fill-height>
-    <v-card>
+    <v-card elevation="4">
       <v-container>
         <v-row align="center">
           <v-col>
@@ -78,7 +78,6 @@
           </v-col>
         </v-row>
       </v-container>
-      <v-divider />
       <v-data-table
         :items="props.items"
         :headers="props.headers"
@@ -93,6 +92,7 @@
         hide-default-footer
         density="compact"
         return-object
+        class="pa-2"
       >
         <template #loading>
           <v-skeleton-loader type="table-row-divider@10" />
@@ -181,7 +181,7 @@
 
 <style scoped>
   .v-data-table {
-    height: calc(98vh - 165px);
+    height: calc(100vh - 170px);
   }
 
   :deep(th) {
