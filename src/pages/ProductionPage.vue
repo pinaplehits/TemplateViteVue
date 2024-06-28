@@ -69,7 +69,7 @@
       } else {
         rootFolder = 'data'
       }
-      const url = `https://localhost:3000/${rootFolder}/SOP/AssemblyDell/${response.items[0].IdDoc}/${response.items[0].IdStation}/`
+      const url = `${import.meta.env.VITE_STATIC_FILES}/${rootFolder}/SOP/AssemblyDell/${response.items[0].IdDoc}/${response.items[0].IdStation}/`
 
       images.value = response.items[0].Images.split(',').map((imagen) => ({
         src: `${url}${imagen}`

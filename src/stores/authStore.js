@@ -1,35 +1,46 @@
+import { ref, computed } from 'vue'
 import { defineStore } from 'pinia'
 import apiClient from '@utils/axiosConfig.js'
 import router from '@router/index.js'
+import { useNavStore } from '@stores/navStore.js'
 
-export const useAuthStore = defineStore('auth', {
-  state: () => ({
-    token: localStorage.getItem('token') || null
-  }),
-  actions: {
-    setToken(token) {
-      this.token = token
-      localStorage.setItem('token', token)
-    },
-    async login(credentials) {
-      const url = 'Authentication/Login'
-      const { token } = await apiClient.post(url, credentials)
-      this.setToken(token)
-    },
-    async loginProduction() {
-      const url = 'Authentication/LoginProduction'
-      const { token } = await apiClient.post(url)
-      this.setToken(token)
-    },
-    logout() {
-      this.token = null
-      localStorage.removeItem('token')
-      router.push({ name: 'Login' })
-    }
-  },
-  getters: {
-    isLoggedIn() {
-      return !!this.token
-    }
+export const useAuthStore = defineStore('auth', () => {
+  const storageName = 'token'
+  const endpointLoginProduction = 'Authentication/LoginProduction'
+  const endpointLogin = 'Authentication/Login'
+  const token = ref(localStorage.getItem(storageName) || null)
+
+  const setToken = (newToken) => {
+    token.value = newToken
+    localStorage.setItem(storageName, newToken)
+  }
+
+  const login = async (credentials) => {
+    const { token: newToken } = await apiClient.post(endpointLogin, credentials)
+    setToken(newToken)
+
+    useNavStore().setRail(true)
+  }
+
+  const loginProduction = async () => {
+    const { token: newToken } = await apiClient.post(endpointLoginProduction)
+    setToken(newToken)
+  }
+
+  const logout = () => {
+    token.value = null
+    localStorage.removeItem(storageName)
+    router.push({ name: 'Login' })
+  }
+
+  const isLoggedIn = computed(() => !!token.value)
+
+  return {
+    token,
+    setToken,
+    login,
+    loginProduction,
+    logout,
+    isLoggedIn
   }
 })

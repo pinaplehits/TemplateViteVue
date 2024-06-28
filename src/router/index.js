@@ -19,7 +19,7 @@ router.beforeEach((to, from) => {
   const authenticated = useAuthStore().isLoggedIn
 
   if (restrictIfAuthenticated && authenticated) {
-    return !from.name ? { name: 'Home' } : false
+    return !from.name ? { name: 'SOP' } : false
   }
 
   if (!authenticated && requiresAuthentication) return { name: 'Login' }

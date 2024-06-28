@@ -10,11 +10,6 @@ export default [
     redirect: { name: 'Login' }
   },
   {
-    path: '/home',
-    name: 'Home',
-    component: () => import('@pages/HomePage.vue')
-  },
-  {
     path: '/:catchAll(.*)',
     name: 'NotFound',
     component: () => import('@pages/NotFoundPage.vue')

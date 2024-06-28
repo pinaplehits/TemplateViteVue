@@ -40,7 +40,7 @@
       rootFolder = 'data'
     }
 
-    const url = `https://localhost:3000/${rootFolder}/SOP/AssemblyDell/${props.idSop}/${idStation}/${props.idSop}-${idStation}.pptx`
+    const url = `${import.meta.env.VITE_STATIC_FILES}/${rootFolder}/SOP/AssemblyDell/${props.idSop}/${idStation}/${props.idSop}-${idStation}.pptx`
 
     window.open(url, '_blank')
   }
@@ -52,7 +52,7 @@
     } else {
       rootFolder = 'data'
     }
-    const url = `https://localhost:3000/${rootFolder}/SOP/AssemblyDell/${props.idSop}/${idStation}/`
+    const url = `${import.meta.env.VITE_STATIC_FILES}/${rootFolder}/SOP/AssemblyDell/${props.idSop}/${idStation}/`
 
     images.value = props.items
       .find((item) => item.id === idStation)
@@ -250,9 +250,9 @@
               <template
                 v-else-if="
                   column.key === 'Actions' ||
-                  column.key === 'Upload' ||
-                  column.key === 'Download' ||
-                  column.key === 'Images'
+                    column.key === 'Upload' ||
+                    column.key === 'Download' ||
+                    column.key === 'Images'
                 "
               >
                 <th>

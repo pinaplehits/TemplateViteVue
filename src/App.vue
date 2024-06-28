@@ -3,9 +3,11 @@
   import routes from '@router/routes.js'
   import { ref, toRef } from 'vue'
   import { useAuthStore } from '@stores/authStore.js'
+  import { useNavStore } from '@stores/navStore.js'
 
-  const rail = ref()
   const isLoggedIn = toRef(useAuthStore(), 'isLoggedIn')
+  const rail = toRef(useNavStore(), 'rail')
+  const isHovered = ref(false)
 
   const navRoutes = routes.filter(
     (route) => route.meta?.showInNav === true && !route.redirect
@@ -16,8 +18,11 @@
   <v-app>
     <v-navigation-drawer
       v-if="isLoggedIn"
-      :expand-on-hover="!rail"
+      expand-on-hover
       :rail="!rail"
+      permanent
+      @mouseover="isHovered = true"
+      @mouseleave="isHovered = false"
     >
       <v-list nav>
         <v-list-item
@@ -27,7 +32,7 @@
         >
           <template #append>
             <v-radio
-              @click="rail = !rail"
+              @click.stop="() => useNavStore().setRail(!rail)"
               density="compact"
               color="grey-darken-2"
               v-model="rail"
@@ -49,7 +54,7 @@
             @click="useAuthStore().logout"
             append-icon="mdi-logout"
           >
-            <template v-if="rail">Logout</template>
+            <template v-if="rail || isHovered">Logout</template>
           </v-btn>
         </div>
       </template>

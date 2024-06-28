@@ -32,7 +32,7 @@
         password: password.value
       })
 
-      router.push({ name: 'Home' })
+      router.push({ name: 'SOP' })
     } catch (error) {
       errorMessage.value = error
     } finally {
@@ -67,6 +67,7 @@
     elevation="6"
     variant="outlined"
     @keypress.enter="login"
+    style="background-color: whitesmoke"
   >
     <v-toolbar
       title="Login"
