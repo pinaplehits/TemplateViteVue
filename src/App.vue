@@ -4,7 +4,7 @@
   import { ref, toRef } from 'vue'
   import { useAuthStore } from '@stores/authStore.js'
 
-  const rail = ref(true)
+  const rail = ref()
   const isLoggedIn = toRef(useAuthStore(), 'isLoggedIn')
 
   const navRoutes = routes.filter(
@@ -46,9 +46,11 @@
         <div class="pa-2">
           <v-btn
             block
-            text="Logout"
             @click="useAuthStore().logout"
-          />
+            append-icon="mdi-logout"
+          >
+            <template v-if="rail">Logout</template>
+          </v-btn>
         </div>
       </template>
     </v-navigation-drawer>
