@@ -1,7 +1,7 @@
 <script setup>
   import { ref, onMounted, watch, onUnmounted } from 'vue'
   import apiClient from '@utils/axiosConfig.js'
-  import { mapImagesToUrls } from '@utils/imageUtils.js'
+  import { useGlobalStore } from '@stores/globalStore.js'
 
   const currentArea = ref(null)
   const itemsArea = ref([])
@@ -56,17 +56,13 @@
         IdStation: currentStation.value
       }
 
-      let rootFolder
-      if (import.meta.env.MODE === 'development') {
-        rootFolder = 'devdata'
-      } else {
-        rootFolder = 'data'
-      }
-
       const response = await apiClient.post(endpointSearchSop, data)
-      const url = `${import.meta.env.VITE_STATIC_FILES}/${rootFolder}/SOP/AssemblyDell/${response.items[0].IdDoc}/${response.items[0].IdStation}/`
 
-      images.value = mapImagesToUrls(response.items[0].Images, url)
+      images.value = useGlobalStore().imageSopAssyDellUrl(
+        response.items[0].IdDoc,
+        response.items[0].IdStation,
+        response.items[0].Images
+      )
 
       isFullscreen.value = true
     } catch (error) {

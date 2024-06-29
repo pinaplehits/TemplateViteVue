@@ -11,7 +11,7 @@
  * 2. Sorts the array of filenames numerically.
  * 3. Maps each filename to an object containing a `src` property with the full URL.
  */
-export function mapImagesToUrls(images, url) {
+export function mapImagesToUrl(images, url) {
   return images
     .split(',')
     .sort((a, b) => parseInt(a) - parseInt(b))

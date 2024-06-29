@@ -27,7 +27,7 @@
     if (!response.headers) return
 
     items.value = response.items
-    headers.value = response.headers.filter((header) => header.key !== 'Images')
+    headers.value = response.headers
 
     const fileTransferActions = [
       { title: 'Download', key: 'Download' },
@@ -81,10 +81,10 @@
     :data="currentItem"
     @success="loadData"
   />
-  <UpdateProjectForm
+  <!-- <UpdateProjectForm
     :sop-details="items"
     @success="loadData"
-  />
+  /> -->
   <DetailsSopTable
     :items="items"
     :headers="headers"

@@ -1,7 +1,7 @@
 <script setup>
   import { ref, watch } from 'vue'
   import apiClient from '@utils/axiosConfig.js'
-  import { mapImagesToUrls } from '@utils/imageUtils.js'
+  import { useGlobalStore } from '@stores/globalStore.js'
 
   const loading = defineModel('loading', { type: Boolean, required: true })
 
@@ -33,33 +33,19 @@
   const images = ref()
 
   const downloadSop = async (idStation) => {
-    // TODO: move rootFolder to a pinia global variable
-    let rootFolder
-    if (import.meta.env.MODE === 'development') {
-      rootFolder = 'devdata'
-    } else {
-      rootFolder = 'data'
-    }
-
-    const url = `${import.meta.env.VITE_STATIC_FILES}/${rootFolder}/SOP/AssemblyDell/${props.idSop}/${idStation}/${props.idSop}-${idStation}.pptx`
+    const url = useGlobalStore().pptxSopAssyDellUrl(props.idSop, idStation)
 
     window.open(url, '_blank')
   }
 
   const showImages = async (idStation) => {
-    let rootFolder
-    if (import.meta.env.MODE === 'development') {
-      rootFolder = 'devdata'
-    } else {
-      rootFolder = 'data'
-    }
-    const url = `${import.meta.env.VITE_STATIC_FILES}/${rootFolder}/SOP/AssemblyDell/${props.idSop}/${idStation}/`
+    const station = props.items.find((item) => item.id === idStation)
 
-    images.value = mapImagesToUrls(
-      props.items.find((item) => item.id === idStation).Images,
-      url
+    images.value = useGlobalStore().imageSopAssyDellUrl(
+      props.idSop,
+      station.id,
+      station.Images
     )
-
     try {
       showDialog.value = true
     } catch (error) {
