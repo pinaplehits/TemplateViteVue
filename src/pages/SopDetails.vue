@@ -6,6 +6,7 @@
   import DetailsSopTable from '@components/DetailsSopTable.vue'
   import UpdateProjectForm from '@components/UpdateProjectForm.vue'
   import { useRoute } from 'vue-router'
+  import { sortDataByKey } from '@utils/sortUtils.js'
 
   const items = ref([])
   const headers = ref([])
@@ -51,7 +52,7 @@
 
     if (!response.items) return
 
-    stations.value = response.items
+    stations.value = sortDataByKey(response.items, 'Station')
   }
 
   const loadData = async () => {

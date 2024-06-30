@@ -2,6 +2,7 @@
   import { ref, onMounted, watch, onUnmounted } from 'vue'
   import apiClient from '@utils/axiosConfig.js'
   import { useGlobalStore } from '@stores/globalStore.js'
+  import { sortDataByKey } from '@utils/sortUtils.js'
 
   const currentArea = ref(null)
   const itemsArea = ref([])
@@ -22,8 +23,12 @@
   const endpointGetLines = 'AssemblyDell/GetLines'
   const endpointSearchSop = 'AssemblyDell/GetSopForProduction'
 
-  const getStations = async () =>
-    (itemsStation.value = (await apiClient.get(endpointGetStations)).items)
+  const getStations = async () => {
+    itemsStation.value = sortDataByKey(
+      (await apiClient.get(endpointGetStations)).items,
+      'Station'
+    )
+  }
 
   const getAreas = async () =>
     (itemsArea.value = (await apiClient.get(endpointGetAreas)).items)
