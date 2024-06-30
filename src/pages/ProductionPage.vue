@@ -127,11 +127,13 @@
         width="100%"
         show-arrows="hover"
         :cycle="isFullscreen"
+        hide-delimiter-background
       >
         <v-carousel-item
           v-for="(item, i) in images"
           :key="i"
-          :src="item.src"
+          :src="item"
+          eager
         />
       </v-carousel>
     </v-card>

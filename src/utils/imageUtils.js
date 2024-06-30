@@ -15,7 +15,5 @@ export function mapImagesToUrl(images, url) {
   return images
     .split(',')
     .sort((a, b) => parseInt(a) - parseInt(b))
-    .map((imagen) => ({
-      src: `${url}${imagen}`
-    }))
+    .map((imagen) => `${url}${imagen}`)
 }
