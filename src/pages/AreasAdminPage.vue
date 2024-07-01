@@ -3,17 +3,25 @@
   import { populateAdminTable } from '@utils/tableUtils'
   import ConfirmPassword from '@components/ConfirmPassword.vue'
   import DataManagementTable from '@components/DataManagementTable.vue'
-  import CreateAreaForm from '@components/CreateAreaForm.vue'
+  import GenericForm from '@components/GenericForm.vue'
 
   const items = ref([])
   const headers = ref([])
   const currentItem = ref({ assemblyDellArea: {} })
   const loading = ref(false)
-  const showCreate = ref(false)
+  const showForm = ref(false)
   const showConfirmPassword = ref(false)
+  const errorMessage = ref(null)
 
   const endpointDelete = 'AssemblyDell/DeleteArea'
   const endpointGet = 'AssemblyDell/GetAreas'
+
+  const form = ref({
+    title: 'Create Area',
+    buttonText: 'Create area',
+    endpoint: 'AssemblyDell/CreateArea',
+    data: {}
+  })
 
   const loadData = async () => {
     loading.value = true
@@ -44,16 +52,28 @@
     :data="currentItem"
     @success="loadData"
   />
-  <CreateAreaForm
-    v-model:showForm="showCreate"
-    @success="loadData"
-  />
+  <GenericForm
+    v-model:showForm="showForm"
+    v-bind="form"
+    @submit-success="loadData"
+  >
+    <v-text-field
+      autofocus
+      v-model="form.data.AreaName"
+      class="mx-4"
+      variant="solo"
+      label="Area name"
+      :rules="[(value) => !!value || 'Area name is required']"
+      :disabled="loading"
+      :error-messages="errorMessage"
+    />
+  </GenericForm>
   <DataManagementTable
     :items="items"
     :headers="headers"
     text-add-button="Create area"
     v-model:loading="loading"
-    v-model:showForm="showCreate"
+    v-model:showForm="showForm"
     @delete-item="deleteItem"
   />
 </template>
