@@ -3,17 +3,25 @@
   import { populateAdminTable } from '@utils/tableUtils.js'
   import ConfirmPassword from '@components/ConfirmPassword.vue'
   import DataManagementTable from '@components/DataManagementTable.vue'
-  import CreateStationForm from '@components/CreateStationForm.vue'
+  import GenericForm from '@components/GenericForm.vue'
 
   const items = ref([])
   const headers = ref([])
   const currentItem = ref({ assemblyDellStation: {} })
   const loading = ref(false)
-  const showCreate = ref(false)
+  const showForm = ref(false)
   const showConfirmPassword = ref(false)
+  const errorMessage = ref(null)
 
   const endpointDelete = 'AssemblyDell/DeleteStation'
   const endpointGet = 'AssemblyDell/GetStations'
+
+  const form = ref({
+    title: 'Create Station',
+    buttonText: 'Create station',
+    endpoint: 'AssemblyDell/CreateStation',
+    data: {}
+  })
 
   const loadData = async () => {
     loading.value = true
@@ -44,16 +52,28 @@
     :data="currentItem"
     @success="loadData"
   />
-  <CreateStationForm
-    v-model:showForm="showCreate"
-    @success="loadData"
-  />
+  <GenericForm
+    v-model:showForm="showForm"
+    v-bind="form"
+    @submit-success="loadData"
+  >
+    <v-text-field
+      autofocus
+      v-model="form.data.StationName"
+      class="mx-4"
+      variant="solo"
+      label="Station name"
+      :rules="[(value) => !!value || 'Station name is required']"
+      :disabled="loading"
+      :error-messages="errorMessage"
+    />
+  </GenericForm>
   <DataManagementTable
     :items="items"
     :headers="headers"
     text-add-button="Create station"
     v-model:loading="loading"
-    v-model:showForm="showCreate"
+    v-model:showForm="showForm"
     @delete-item="deleteItem"
   />
 </template>
