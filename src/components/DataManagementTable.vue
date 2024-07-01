@@ -71,7 +71,9 @@
           <v-spacer />
           <v-col cols="auto">
             <v-btn
-              color="primary"
+              variant="outlined"
+              style="text-transform: none"
+              prepend-icon="mdi-plus"
               @click.stop="showForm = true"
               :text="props.textAddButton"
             />
@@ -92,7 +94,7 @@
         hide-default-footer
         density="compact"
         return-object
-        class="pa-2"
+        class="px-2"
       >
         <template #loading>
           <v-skeleton-loader type="table-row-divider@10" />

@@ -155,7 +155,7 @@
   <v-container fill-height>
     <v-card elevation="4">
       <v-container>
-        <v-row align="center">
+        <v-row>
           <v-col>
             <v-text-field
               v-model="search"
@@ -179,8 +179,10 @@
               v-model="currentStations"
               chips
               multiple
-              class="mr-4"
-              variant="solo"
+              density="compact"
+              class="mr-4 pt-1"
+              variant="outlined"
+              color="primary"
               item-title="Station"
               item-value="id"
               :items="props.stations"
@@ -191,7 +193,10 @@
           <v-col cols="auto">
             <v-btn
               :disabled="currentStations.length === 0 || loadingAddStation"
-              color="primary"
+              class="mt-1"
+              variant="outlined"
+              style="text-transform: none"
+              prepend-icon="mdi-plus"
               :loading="loading"
               @click.stop="addStation"
               :text="props.textAddButton"
@@ -212,7 +217,7 @@
         items-per-page="-1"
         hide-default-footer
         return-object
-        class="pa-2"
+        class="px-2 mt-n2"
         density="compact"
       >
         <template #loading>
