@@ -117,18 +117,18 @@
       class="mb-2"
       v-bind="model"
       @success="handleModel($event)"
-      @input="(value) => (form.data.ModelId = value)"
+      @input="form.data.ModelId = $event"
     />
     <GenericAutocomplete
       class="mb-2"
       v-bind="area"
-      @success="(value) => (area.items = value.items)"
-      @input="(value) => (form.data.AreaId = value)"
+      @success="area.items = $event.items"
+      @input="form.data.AreaId = $event"
     />
     <GenericAutocomplete
       v-bind="line"
-      @success="(value) => (line.items = value.items)"
-      @input="(value) => (form.data.LinesId = value)"
+      @success="line.items = $event.items"
+      @input="form.data.LinesId = $event"
       chips
       multiple
     />
