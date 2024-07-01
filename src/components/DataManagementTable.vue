@@ -7,6 +7,8 @@
   const emit = defineEmits(['deleteItem', 'detailItem'])
 
   const props = defineProps({
+    title: { type: String, required: true },
+    subtitle: { type: String, required: true },
     items: { type: Array, required: true },
     headers: { type: Array, required: true },
     textAddButton: { type: String, default: 'Add' }
@@ -48,6 +50,24 @@
 
 <template>
   <v-container fill-height>
+    <h1
+      class="ml-2"
+      style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis"
+    >
+      {{ props.title }}
+    </h1>
+    <h4
+      class="ml-3 mb-2"
+      style="
+        font-weight: 300;
+        color: gray;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      "
+    >
+      {{ props.subtitle }}
+    </h4>
     <v-card elevation="4">
       <v-container>
         <v-row align="center">
@@ -183,7 +203,7 @@
 
 <style scoped>
   .v-data-table {
-    height: calc(100vh - 170px);
+    height: calc(97vh - 170px);
   }
 
   :deep(th) {

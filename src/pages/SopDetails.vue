@@ -4,7 +4,6 @@
   import apiClient from '@utils/axiosConfig.js'
   import ConfirmPassword from '@components/ConfirmPassword.vue'
   import DetailsSopTable from '@components/DetailsSopTable.vue'
-  import UpdateProjectForm from '@components/UpdateProjectForm.vue'
   import { useRoute } from 'vue-router'
   import { sortDataByKey } from '@utils/sortUtils.js'
 
@@ -82,10 +81,6 @@
     :data="currentItem"
     @success="loadData"
   />
-  <!-- <UpdateProjectForm
-    :sop-details="items"
-    @success="loadData"
-  /> -->
   <DetailsSopTable
     :items="items"
     :headers="headers"

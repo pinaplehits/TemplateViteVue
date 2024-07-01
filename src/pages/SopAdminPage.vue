@@ -7,8 +7,6 @@
   import GenericForm from '@components/GenericForm.vue'
   import router from '@router/index.js'
 
-  const items = ref([])
-  const headers = ref([])
   const currentItem = ref({ assemblyDellSop: {} })
   const loading = ref(false)
   const showForm = ref(false)
@@ -16,6 +14,15 @@
 
   const endpointDelete = 'AssemblyDell/DeleteSop'
   const endpointGet = 'AssemblyDell/GetSops'
+
+  const dataTable = ref({
+    items: [],
+    headers: [],
+    title: 'SOPs Management',
+    subtitle:
+      'Manage and organize Standard Operating Procedures for Assembly Dell projects',
+    textAddButton: 'Create project'
+  })
 
   const area = ref({
     items: [],
@@ -65,8 +72,8 @@
     try {
       const response = await populateAdminTable(endpointGet)
 
-      items.value = response.items
-      headers.value = response.headers
+      dataTable.value.items = response.items
+      dataTable.value.headers = response.headers
     } catch (error) {
       console.error(error.message)
     } finally {
@@ -127,9 +134,7 @@
     />
   </GenericForm>
   <DataManagementTable
-    :items="items"
-    :headers="headers"
-    text-add-button="Create Project"
+    v-bind="dataTable"
     v-model:loading="loading"
     v-model:showForm="showForm"
     @delete-item="deleteItem"

@@ -95,3 +95,9 @@
     </v-card>
   </v-dialog>
 </template>
+
+<style scoped>
+  .v-btn {
+    text-transform: none;
+  }
+</style>

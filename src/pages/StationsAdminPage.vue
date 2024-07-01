@@ -5,8 +5,6 @@
   import DataManagementTable from '@components/DataManagementTable.vue'
   import GenericForm from '@components/GenericForm.vue'
 
-  const items = ref([])
-  const headers = ref([])
   const currentItem = ref({ assemblyDellStation: {} })
   const loading = ref(false)
   const showForm = ref(false)
@@ -15,6 +13,14 @@
 
   const endpointDelete = 'AssemblyDell/DeleteStation'
   const endpointGet = 'AssemblyDell/GetStations'
+
+  const dataTable = ref({
+    items: [],
+    headers: [],
+    title: 'Stations Management',
+    subtitle: 'Manage and organize models for Assembly Dell projects',
+    textAddButton: 'Create station'
+  })
 
   const form = ref({
     title: 'Create Station',
@@ -28,8 +34,8 @@
     try {
       const response = await populateAdminTable(endpointGet)
 
-      items.value = response.items
-      headers.value = response.headers
+      dataTable.value.items = response.items
+      dataTable.value.headers = response.headers
     } catch (error) {
       console.error(error.message)
     } finally {
@@ -69,9 +75,7 @@
     />
   </GenericForm>
   <DataManagementTable
-    :items="items"
-    :headers="headers"
-    text-add-button="Create station"
+    v-bind="dataTable"
     v-model:loading="loading"
     v-model:showForm="showForm"
     @delete-item="deleteItem"

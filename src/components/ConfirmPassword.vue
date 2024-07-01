@@ -114,10 +114,11 @@
 
 <style scoped>
   .v-btn {
-    font-weight: bold;
+    text-transform: none;
   }
   .delete-button {
     background-color: #b00020;
     color: white;
+    font-weight: 600;
   }
 </style>
