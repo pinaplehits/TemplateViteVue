@@ -12,6 +12,7 @@
   ])
 
   const props = defineProps({
+    data: { type: Object, required: true },
     items: { type: Array, required: true },
     headers: { type: Array, required: true },
     stations: { type: Array, required: true },
@@ -153,9 +154,43 @@
     </v-carousel>
   </v-dialog>
   <v-container fill-height>
+    <v-card class="mb-4">
+      <v-container class="mt-n2">
+        <v-row>
+          <v-col>
+            <v-card-title>{{ props.data.Project }}</v-card-title>
+            <v-card-subtitle>Project name</v-card-subtitle>
+          </v-col>
+          <v-col>
+            <v-card-title>{{ props.data.Model }}</v-card-title>
+            <v-card-subtitle>Model</v-card-subtitle>
+          </v-col>
+          <v-col>
+            <v-card-title>{{ props.data.Area }}</v-card-title>
+            <v-card-subtitle>Area</v-card-subtitle>
+          </v-col>
+          <v-col>
+            <v-card-title>{{ props.data.Lines }}</v-card-title>
+            <v-card-subtitle>Lines</v-card-subtitle>
+          </v-col>
+          <v-col class="d-flex justify-end align-center">
+            <v-btn
+              text="Edit project"
+              prepend-icon="mdi-pencil-outline"
+            />
+          </v-col>
+        </v-row>
+      </v-container>
+    </v-card>
     <v-card elevation="4">
       <v-container>
         <v-row>
+          <v-icon
+            class="mt-6 ml-4 mr-2 cursor-pointer"
+            @click.stop="$router.push({ name: 'SOP' })"
+          >
+            mdi-arrow-left
+          </v-icon>
           <v-col>
             <v-text-field
               v-model="search"
@@ -364,7 +399,7 @@
 
 <style scoped>
   .v-data-table {
-    height: calc(100vh - 145px);
+    height: calc(91vh - 145px);
   }
 
   :deep(th) {

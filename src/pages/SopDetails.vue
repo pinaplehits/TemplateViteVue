@@ -17,12 +17,14 @@
     stations: [],
     idSop: useRoute().params.id,
     endpointAddStation: 'AssemblyDell/AddStationToSop',
-    textAddButton: 'Add station'
+    textAddButton: 'Add station',
+    data: {}
   })
 
   const endpointDelete = 'AssemblyDell/DeleteStationInSop'
   const endpointGetStationsNotInSop = `AssemblyDell/GetStationsNotInSop/${dataTable.value.idSop}`
   const endpointGetStationsInSop = `AssemblyDell/GetSopDetails/${dataTable.value.idSop}`
+  const endpointDetailsSop = `AssemblyDell/GetSopById/${dataTable.value.idSop}`
 
   const getStationsInSop = async () => {
     const response = await populateAdminTable(endpointGetStationsInSop)
@@ -57,12 +59,26 @@
     dataTable.value.stations = sortDataByKey(response.items, 'Station')
   }
 
+  const getSopDetails = async () => {
+    try {
+      const { items } = await apiClient.get(endpointDetailsSop)
+
+      dataTable.value.data = items[0]
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
   const loadData = async () => {
     loading.value = true
     try {
-      await Promise.all([getStationsInSop(), getStationsNotInSop()])
+      await Promise.all([
+        getStationsInSop(),
+        getStationsNotInSop(),
+        getSopDetails()
+      ])
     } catch (error) {
-      console.error(error.message)
+      console.error(error)
     } finally {
       loading.value = false
     }
