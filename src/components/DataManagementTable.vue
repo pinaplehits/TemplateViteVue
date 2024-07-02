@@ -14,7 +14,7 @@
     textAddButton: { type: String, default: 'Add' }
   })
 
-  const sortBy = ref([])
+  const sortBy = ref([{ key: 'Station', order: 'asc' }])
   const selected = ref([])
   const search = ref('')
   const searchFocused = ref(false)
