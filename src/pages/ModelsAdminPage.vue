@@ -1,89 +1,77 @@
 <script setup>
-  import { ref, onMounted } from 'vue'
-  import { populateAdminTable } from '@utils/tableUtils'
-  import ConfirmPassword from '@components/ConfirmPassword.vue'
-  import DataManagementTable from '@components/DataManagementTable.vue'
+  import { ref, provide } from 'vue'
+  import AdminTemplate from '@components/AdminTemplate.vue'
   import GenericForm from '@components/GenericForm.vue'
 
-  const currentItem = ref({ assemblyDellModel: {} })
-  const loading = ref(false)
-  const showForm = ref(false)
-  const showConfirmPassword = ref(false)
+  const showEditForm = ref(false)
+  const reload = ref(false)
 
-  const endpointDelete = 'AssemblyDell/DeleteModel'
-  const endpointGet = 'AssemblyDell/GetModels'
-
-  const dataTable = ref({
-    items: [],
-    headers: [],
+  const data = ref({
     title: 'Models Management',
-    subtitle: 'Manage and organize models for Assembly Dell projects',
-    textAddButton: 'Create model'
+    subtitle: 'Manage and organize model for Assembly Dell projects',
+    textAddButton: 'Create model',
+    titleForm: 'Create Model',
+    textFormButton: 'Create model',
+    formInputs: {},
+    endpointGet: 'AssemblyDell/GetModels',
+    endpointDelete: 'AssemblyDell/DeleteModel',
+    endpointCreate: 'AssemblyDell/CreateModel'
   })
 
-  const form = ref({
-    title: 'Create Model',
-    buttonText: 'Create model',
-    endpoint: 'AssemblyDell/CreateModel',
+  const editForm = ref({
+    title: 'Update Model',
+    buttonText: 'Update model',
+    endpoint: 'AssemblyDell/UpdateModel',
     data: {}
   })
 
-  const loadData = async () => {
-    loading.value = true
-    try {
-      const response = await populateAdminTable(endpointGet)
-
-      dataTable.value.items = response.items
-      dataTable.value.headers = response.headers
-    } catch (error) {
-      console.error(error.message)
-    } finally {
-      loading.value = false
-    }
+  const handleDetailItem = (item) => {
+    editForm.value.data.id = item.id
+    editForm.value.data.ModelName = item.Model
+    editForm.value.data.Platform = item.Platform
+    showEditForm.value = true
   }
 
-  const deleteItem = (item) => {
-    currentItem.value.assemblyDellModel.id = item
-    showConfirmPassword.value = true
-  }
-
-  onMounted(loadData)
+  provide('handleDetailItem', handleDetailItem)
 </script>
 
 <template>
-  <ConfirmPassword
-    v-model:showDialog="showConfirmPassword"
-    :endpoint="endpointDelete"
-    :data="currentItem"
-    @success="loadData"
-  />
   <GenericForm
-    v-model:showForm="showForm"
-    v-bind="form"
-    @submit-success="loadData"
+    v-model:showForm="showEditForm"
+    v-bind="editForm"
+    @submit-success="reload = true"
   >
     <v-text-field
       autofocus
-      v-model="form.data.ModelName"
+      v-model="editForm.data.ModelName"
       class="mx-4 mb-2"
       variant="solo"
       label="Model name"
       :rules="[(value) => !!value || 'Model name is required']"
-      :disabled="loading"
     />
     <v-text-field
-      v-model="form.data.Platform"
+      v-model="editForm.data.Platform"
       class="mx-4"
       variant="solo"
       label="Platform name"
       :rules="[(value) => !!value || 'Platform name is required']"
-      :disabled="loading"
     />
   </GenericForm>
-  <DataManagementTable
-    v-bind="dataTable"
-    v-model:loading="loading"
-    v-model:showForm="showForm"
-    @delete-item="deleteItem"
-  />
+  <AdminTemplate v-bind="data">
+    <v-text-field
+      autofocus
+      v-model="data.formInputs.ModelName"
+      class="mx-4 mb-2"
+      variant="solo"
+      label="Model name"
+      :rules="[(value) => !!value || 'Model name is required']"
+    />
+    <v-text-field
+      v-model="data.formInputs.Platform"
+      class="mx-4"
+      variant="solo"
+      label="Platform name"
+      :rules="[(value) => !!value || 'Platform name is required']"
+    />
+  </AdminTemplate>
 </template>

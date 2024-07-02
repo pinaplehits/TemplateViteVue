@@ -1,6 +1,6 @@
 <script setup>
   import { ref } from 'vue'
-  import { useRouter } from 'vue-router'
+  import router from '@router/index.js'
   import { useAuthStore } from '@stores/authStore.js'
 
   const form = ref()
@@ -11,7 +11,6 @@
   const loading = ref(false)
   const loadingLogin = ref(false)
   const loadingProduction = ref(false)
-  const router = useRouter()
 
   const login = async () => {
     if (loading.value) return

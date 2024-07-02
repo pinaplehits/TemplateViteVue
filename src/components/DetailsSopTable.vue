@@ -29,6 +29,7 @@
   const searchFocused = ref(false)
   const currentStations = ref([])
   const fileSelected = ref({})
+  const actions = ref(['Actions', 'Upload', 'Download', 'Images'])
 
   const showDialog = ref(false)
   const images = ref()
@@ -251,9 +252,9 @@
         fixed-header
         items-per-page="-1"
         hide-default-footer
-        return-object
-        class="px-2 mt-n2"
         density="compact"
+        class="px-2 mt-n2"
+        return-object
       >
         <template #loading>
           <v-skeleton-loader type="table-row-divider@10" />
@@ -275,14 +276,7 @@
                   />
                 </th>
               </template>
-              <template
-                v-else-if="
-                  column.key === 'Actions' ||
-                  column.key === 'Upload' ||
-                  column.key === 'Download' ||
-                  column.key === 'Images'
-                "
-              >
+              <template v-else-if="actions.includes(column.key)">
                 <th>
                   {{ column.title }}
                 </th>

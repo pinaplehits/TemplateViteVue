@@ -1,27 +1,20 @@
 <script setup>
-  import { ref, onMounted } from 'vue'
-  import { populateAdminTable } from '@utils/tableUtils'
-  import ConfirmPassword from '@components/ConfirmPassword.vue'
-  import DataManagementTable from '@components/DataManagementTable.vue'
-  import GenericAutocomplete from '@components/GenericAutocomplete.vue'
-  import GenericForm from '@components/GenericForm.vue'
+  import { ref, provide } from 'vue'
   import router from '@router/index.js'
+  import AdminTemplate from '@components/AdminTemplate.vue'
+  import GenericAutocomplete from '@components/GenericAutocomplete.vue'
 
-  const currentItem = ref({ assemblyDellSop: {} })
-  const loading = ref(false)
-  const showForm = ref(false)
-  const showConfirmPassword = ref(false)
-
-  const endpointDelete = 'AssemblyDell/DeleteSop'
-  const endpointGet = 'AssemblyDell/GetSops'
-
-  const dataTable = ref({
-    items: [],
-    headers: [],
+  const data = ref({
     title: 'SOPs Management',
     subtitle:
       'Manage and organize Standard Operating Procedures for Assembly Dell projects',
-    textAddButton: 'Create project'
+    textAddButton: 'Create project',
+    titleForm: 'Create Project',
+    textFormButton: 'Create project',
+    formInputs: {},
+    endpointGet: 'AssemblyDell/GetSops',
+    endpointDelete: 'AssemblyDell/DeleteSop',
+    endpointCreate: 'AssemblyDell/CreateSop'
   })
 
   const area = ref({
@@ -53,13 +46,6 @@
     endpoint: 'AssemblyDell/GetLines'
   })
 
-  const form = ref({
-    title: 'Create Project',
-    buttonText: 'Create project',
-    endpoint: 'AssemblyDell/CreateSop',
-    data: {}
-  })
-
   const handleModel = (value) => {
     model.value.items = value.items.map((item) => ({
       ...item,
@@ -67,47 +53,18 @@
     }))
   }
 
-  const loadData = async () => {
-    loading.value = true
-    try {
-      const response = await populateAdminTable(endpointGet)
-
-      dataTable.value.items = response.items
-      dataTable.value.headers = response.headers
-    } catch (error) {
-      console.error(error.message)
-    } finally {
-      loading.value = false
-    }
+  const handleDetailItem = (item) => {
+    router.push({ name: 'SOP details', params: { id: item.id } })
   }
 
-  const deleteItem = (item) => {
-    currentItem.value.assemblyDellSop.id = item
-    showConfirmPassword.value = true
-  }
-
-  const detailItem = (item) => {
-    router.push({ name: 'SOP details', params: { id: item } })
-  }
-
-  onMounted(loadData)
+  provide('handleDetailItem', handleDetailItem)
 </script>
 
 <template>
-  <ConfirmPassword
-    v-model:showDialog="showConfirmPassword"
-    :endpoint="endpointDelete"
-    :data="currentItem"
-    @success="loadData"
-  />
-  <GenericForm
-    v-model:showForm="showForm"
-    v-bind="form"
-    @submit-success="loadData"
-  >
+  <AdminTemplate v-bind="data">
     <v-text-field
       autofocus
-      v-model="form.data.ProjectName"
+      v-model="data.formInputs.ProjectName"
       class="mx-4 mb-2"
       variant="solo"
       label="Project name"
@@ -117,27 +74,20 @@
       class="mb-2"
       v-bind="model"
       @success="handleModel($event)"
-      @input="form.data.ModelId = $event"
+      @input="data.formInputs.ModelId = $event"
     />
     <GenericAutocomplete
       class="mb-2"
       v-bind="area"
       @success="area.items = $event.items"
-      @input="form.data.AreaId = $event"
+      @input="data.formInputs.AreaId = $event"
     />
     <GenericAutocomplete
       v-bind="line"
       @success="line.items = $event.items"
-      @input="form.data.LinesId = $event"
+      @input="data.formInputs.LinesId = $event"
       chips
       multiple
     />
-  </GenericForm>
-  <DataManagementTable
-    v-bind="dataTable"
-    v-model:loading="loading"
-    v-model:showForm="showForm"
-    @delete-item="deleteItem"
-    @detail-item="detailItem"
-  />
+  </AdminTemplate>
 </template>
