@@ -18,9 +18,7 @@
   })
 
   const area = ref({
-    items: [],
     itemTitle: 'Area',
-    itemValue: 'id',
     rules: [(v) => !!v || 'Area is required'],
     label: 'Areas',
     endpoint: 'AssemblyDell/GetAreas'
@@ -28,16 +26,13 @@
 
   const model = ref({
     items: [],
-    itemValue: 'id',
     rules: [(v) => !!v || 'Model is required'],
     label: 'Models',
     endpoint: 'AssemblyDell/GetModels'
   })
 
   const line = ref({
-    items: [],
     itemTitle: 'Name',
-    itemValue: 'id',
     rules: [
       (v) => !!v || 'At least one line is required',
       (v) => v.length > 0 || 'At least one line is required'
@@ -79,12 +74,10 @@
     <GenericAutocomplete
       class="mb-2"
       v-bind="area"
-      @success="area.items = $event.items"
       @input="data.formInputs.AreaId = $event"
     />
     <GenericAutocomplete
       v-bind="line"
-      @success="line.items = $event.items"
       @input="data.formInputs.LinesId = $event"
       chips
       multiple

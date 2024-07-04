@@ -2,28 +2,27 @@
   import { ref, onMounted, watch } from 'vue'
   import apiClient from '@utils/axiosConfig.js'
 
+  const model = ref(null)
+
   const emit = defineEmits(['success', 'input'])
-  const items = defineModel('items', {
-    type: Array,
-    required: true
-  })
+
+  const loading = defineModel('loading', { type: Boolean, default: false })
+  const items = defineModel('items', { type: Array, default: [] })
 
   const props = defineProps({
     itemTitle: { type: String, default: 'title' },
-    itemValue: { type: String, required: true },
+    itemValue: { type: String, default: 'id' },
     rules: { type: Array, default: () => [] },
     label: { type: String, required: true },
     endpoint: { type: String, required: true },
     multiple: { type: Boolean, default: false }
   })
 
-  const loading = ref(false)
-  const model = ref(null)
-
   const loadData = async () => {
     loading.value = true
     try {
       const response = await apiClient.get(props.endpoint)
+      items.value = response.items
 
       emit('success', response)
     } catch (error) {

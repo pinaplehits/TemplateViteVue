@@ -25,8 +25,8 @@
   })
 
   const dataTable = ref({
-    classDataTable: 'pa-2',
     classTr: 'cursor-pointer',
+    density: 'compact',
     endpoint: props.endpointGet
   })
 

@@ -1,82 +1,37 @@
 <script setup>
   import { ref, onMounted } from 'vue'
-  import { populateAdminTable } from '@utils/tableUtils'
-  import apiClient from '@utils/axiosConfig.js'
-  import ConfirmPassword from '@components/ConfirmPassword.vue'
-  import DetailsSopTable from '@components/DetailsSopTable.vue'
   import { useRoute } from 'vue-router'
-  import { sortDataByKey } from '@utils/sortUtils.js'
+  import apiClient from '@utils/axiosConfig.js'
+  import DetailsTemplate from '@components/DetailsTemplate.vue'
 
-  const currentItem = ref({ assemblyDellStationSop: {} })
   const loading = ref(false)
-  const showConfirmPassword = ref(false)
+  const project = ref([])
+  const idSop = useRoute().params.id
 
-  const dataTable = ref({
-    items: [],
-    headers: [],
-    stations: [],
-    idSop: useRoute().params.id,
-    endpointAddStation: 'AssemblyDell/AddStationToSop',
+  const data = ref({
+    idSop,
     textAddButton: 'Add station',
-    data: {}
+    titleForm: 'Update Project',
+    textFormButton: 'Update project',
+    formInputs: {},
+    endpointGet: `AssemblyDell/GetSopDetails/${idSop}`,
+    endpointDelete: 'AssemblyDell/DeleteStationInSop',
+    endpointUpdate: '',
+    endpointAddStation: 'AssemblyDell/AddStationToSop'
   })
 
-  const endpointDelete = 'AssemblyDell/DeleteStationInSop'
-  const endpointGetStationsNotInSop = `AssemblyDell/GetStationsNotInSop/${dataTable.value.idSop}`
-  const endpointGetStationsInSop = `AssemblyDell/GetSopDetails/${dataTable.value.idSop}`
-  const endpointDetailsSop = `AssemblyDell/GetSopById/${dataTable.value.idSop}`
+  const endpointGet = `AssemblyDell/GetSopById/${idSop}`
 
-  const getStationsInSop = async () => {
-    const response = await populateAdminTable(endpointGetStationsInSop)
+  const getProjectInfo = async () => {
+    const { items } = await apiClient.get(endpointGet)
 
-    if (!response.headers) return
-
-    dataTable.value.items = response.items
-    dataTable.value.headers = response.headers
-
-    const fileTransferActions = [
-      { title: 'Download', key: 'Download' },
-      { title: 'Upload', key: 'Upload' }
-    ]
-
-    const actionsIndex = dataTable.value.headers.findIndex(
-      (header) => header.title === 'Actions'
-    )
-
-    if (actionsIndex !== -1) {
-      dataTable.value.headers.splice(actionsIndex, 0, ...fileTransferActions)
-      return
-    }
-
-    dataTable.value.headers.push(...fileTransferActions)
-  }
-
-  const getStationsNotInSop = async () => {
-    const response = await apiClient.get(endpointGetStationsNotInSop)
-
-    if (!response.items) return
-
-    dataTable.value.stations = sortDataByKey(response.items, 'Station')
-  }
-
-  const getSopDetails = async () => {
-    try {
-      const { items } = await apiClient.get(endpointDetailsSop)
-
-      dataTable.value.data = items[0]
-    } catch (error) {
-      console.error(error)
-    }
+    project.value = items[0]
   }
 
   const loadData = async () => {
     loading.value = true
     try {
-      await Promise.all([
-        getStationsInSop(),
-        getStationsNotInSop(),
-        getSopDetails()
-      ])
+      await Promise.all([getProjectInfo()])
     } catch (error) {
       console.error(error)
     } finally {
@@ -84,27 +39,40 @@
     }
   }
 
-  const deleteItem = (item) => {
-    currentItem.value.assemblyDellStationSop.idStation = item
-    currentItem.value.assemblyDellStationSop.idSop = dataTable.value.idSop
-    showConfirmPassword.value = true
-  }
-
   onMounted(loadData)
 </script>
 
 <template>
-  <ConfirmPassword
-    v-model:showDialog="showConfirmPassword"
-    :endpoint="endpointDelete"
-    :data="currentItem"
-    @success="loadData"
-  />
-  <DetailsSopTable
-    v-bind="dataTable"
-    v-model:loading="loading"
-    @delete-item="deleteItem"
-    @add-station-success="loadData"
-    @upload-file-success="loadData"
-  />
+  <DetailsTemplate v-bind="data">
+    <template #info>
+      <v-card class="mb-4">
+        <v-container class="mt-n2">
+          <v-row>
+            <v-col>
+              <v-card-title>{{ project.Project }}</v-card-title>
+              <v-card-subtitle>Project name</v-card-subtitle>
+            </v-col>
+            <v-col>
+              <v-card-title>{{ project.Model }}</v-card-title>
+              <v-card-subtitle>Model</v-card-subtitle>
+            </v-col>
+            <v-col>
+              <v-card-title>{{ project.Area }}</v-card-title>
+              <v-card-subtitle>Area</v-card-subtitle>
+            </v-col>
+            <v-col>
+              <v-card-title>{{ project.Lines }}</v-card-title>
+              <v-card-subtitle>Lines</v-card-subtitle>
+            </v-col>
+            <v-col class="d-flex justify-end align-center">
+              <v-btn
+                text="Edit project"
+                prepend-icon="mdi-pencil-outline"
+              />
+            </v-col>
+          </v-row>
+        </v-container>
+      </v-card>
+    </template>
+  </DetailsTemplate>
 </template>

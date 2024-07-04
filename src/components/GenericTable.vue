@@ -17,8 +17,9 @@
   const reload = defineModel('reload', { type: Boolean, default: false })
 
   const props = defineProps({
-    classDataTable: { type: String, default: '' },
+    classDataTable: { type: String, default: 'pa-2' },
     classTr: { type: String, default: '' },
+    density: { type: String, default: 'default' },
     endpoint: { type: String, required: true },
     actions: {
       type: Array,
@@ -105,7 +106,7 @@
     fixed-header
     items-per-page="-1"
     hide-default-footer
-    density="compact"
+    :density="props.density"
     return-object
     :class="props.classDataTable"
   >
