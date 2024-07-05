@@ -13,15 +13,15 @@
     titleForm: 'Create Line',
     textFormButton: 'Create line',
     formInputs: {},
-    endpointGet: 'AssemblyDell/GetLines',
-    endpointDelete: 'AssemblyDell/DeleteLine',
-    endpointCreate: 'AssemblyDell/CreateLine'
+    endpointGet: 'Dell/Sop/AssemblyLine/Get',
+    endpointDelete: 'Dell/Sop/AssemblyLine/Delete',
+    endpointCreate: 'Dell/Sop/AssemblyLine/Create'
   })
 
   const editForm = ref({
     title: 'Update Line',
     buttonText: 'Update line',
-    endpoint: 'AssemblyDell/UpdateLine',
+    endpoint: 'Dell/Sop/AssemblyLine/Update',
     data: {}
   })
 
@@ -57,7 +57,10 @@
       :rules="[(value) => !!value || 'Type is required']"
     />
   </GenericForm>
-  <AdminTemplate v-bind="data">
+  <AdminTemplate
+    v-bind="data"
+    v-model:reload="reload"
+  >
     <v-text-field
       autofocus
       v-model="data.formInputs.LineName"

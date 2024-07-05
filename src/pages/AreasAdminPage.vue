@@ -13,15 +13,15 @@
     titleForm: 'Create Area',
     textFormButton: 'Create area',
     formInputs: {},
-    endpointGet: 'AssemblyDell/GetAreas',
-    endpointDelete: 'AssemblyDell/DeleteArea',
-    endpointCreate: 'AssemblyDell/CreateArea'
+    endpointGet: 'Dell/Sop/AssemblyArea/Get',
+    endpointDelete: 'Dell/Sop/AssemblyArea/Delete',
+    endpointCreate: 'Dell/Sop/AssemblyArea/Create'
   })
 
   const editForm = ref({
     title: 'Update Area',
     buttonText: 'Update area',
-    endpoint: 'AssemblyDell/UpdateArea',
+    endpoint: 'Dell/Sop/AssemblyArea/Update',
     data: {}
   })
 

@@ -58,7 +58,7 @@
   const autoComplete = ref({
     itemTitle: 'Station',
     label: 'Stations',
-    endpoint: `AssemblyDell/GetStationsNotInSop/${props.idSop}`
+    endpoint: `Dell/Sop/AssemblyStation/GetUnassignedForSop/${props.idSop}`
   })
 
   const deleteItem = (item) => {
@@ -197,6 +197,7 @@
           </v-col>
           <v-spacer />
           <GenericAutocomplete
+            v-model:reload="reload"
             v-model="currentStations"
             :loading="loadingAddStation"
             v-bind="autoComplete"

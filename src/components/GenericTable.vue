@@ -53,6 +53,7 @@
       console.error(error)
     } finally {
       loading.value = false
+      reload.value = false
     }
   }
 
@@ -86,10 +87,7 @@
   onMounted(loadData)
 
   watch(reload, (newValue) => {
-    if (newValue) {
-      loadData()
-      reload.value = false
-    }
+    if (newValue) loadData()
   })
 </script>
 

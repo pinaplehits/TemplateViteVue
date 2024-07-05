@@ -8,6 +8,7 @@
 
   const loading = defineModel('loading', { type: Boolean, default: false })
   const items = defineModel('items', { type: Array, default: [] })
+  const reload = defineModel('reload', { type: Boolean, default: false })
 
   const props = defineProps({
     itemTitle: { type: String, default: 'title' },
@@ -29,6 +30,7 @@
       console.error(error)
     } finally {
       loading.value = false
+      reload.value = false
     }
   }
 
@@ -36,6 +38,10 @@
 
   watch(model, () => {
     emit('input', model.value)
+  })
+
+  watch(reload, (newValue) => {
+    if (newValue) loadData()
   })
 </script>
 

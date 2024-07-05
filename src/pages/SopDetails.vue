@@ -14,13 +14,13 @@
     titleForm: 'Update Project',
     textFormButton: 'Update project',
     formInputs: {},
-    endpointGet: `AssemblyDell/GetSopDetails/${idSop}`,
-    endpointDelete: 'AssemblyDell/DeleteStationInSop',
+    endpointGet: `Dell/Sop/AssemblySop/GetDetails/${idSop}`,
+    endpointDelete: 'Dell/Sop/AssemblyStation/DeleteInSop',
     endpointUpdate: '',
-    endpointAddStation: 'AssemblyDell/AddStationToSop'
+    endpointAddStation: 'Dell/Sop/AssemblyStation/AddToSop'
   })
 
-  const endpointGet = `AssemblyDell/GetSopById/${idSop}`
+  const endpointGet = `Dell/Sop/AssemblySop/GetById/${idSop}`
 
   const getProjectInfo = async () => {
     const { items } = await apiClient.get(endpointGet)

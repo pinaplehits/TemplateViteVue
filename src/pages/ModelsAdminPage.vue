@@ -13,15 +13,15 @@
     titleForm: 'Create Model',
     textFormButton: 'Create model',
     formInputs: {},
-    endpointGet: 'AssemblyDell/GetModels',
-    endpointDelete: 'AssemblyDell/DeleteModel',
-    endpointCreate: 'AssemblyDell/CreateModel'
+    endpointGet: 'Dell/Sop/AssemblyModel/Get',
+    endpointDelete: 'Dell/Sop/AssemblyModel/Delete',
+    endpointCreate: 'Dell/Sop/AssemblyModel/Create'
   })
 
   const editForm = ref({
     title: 'Update Model',
     buttonText: 'Update model',
-    endpoint: 'AssemblyDell/UpdateModel',
+    endpoint: 'Dell/Sop/AssemblyModel/Update',
     data: {}
   })
 
@@ -57,7 +57,10 @@
       :rules="[(value) => !!value || 'Platform name is required']"
     />
   </GenericForm>
-  <AdminTemplate v-bind="data">
+  <AdminTemplate
+    v-bind="data"
+    v-model:reload="reload"
+  >
     <v-text-field
       autofocus
       v-model="data.formInputs.ModelName"

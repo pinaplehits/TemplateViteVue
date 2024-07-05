@@ -12,23 +12,23 @@
     titleForm: 'Create Project',
     textFormButton: 'Create project',
     formInputs: {},
-    endpointGet: 'AssemblyDell/GetSops',
-    endpointDelete: 'AssemblyDell/DeleteSop',
-    endpointCreate: 'AssemblyDell/CreateSop'
+    endpointGet: 'Dell/Sop/AssemblySop/Get',
+    endpointDelete: 'Dell/Sop/AssemblySop/Delete',
+    endpointCreate: 'Dell/Sop/AssemblySop/Create'
   })
 
   const area = ref({
     itemTitle: 'Area',
     rules: [(v) => !!v || 'Area is required'],
     label: 'Areas',
-    endpoint: 'AssemblyDell/GetAreas'
+    endpoint: 'Dell/Sop/AssemblyArea/Get'
   })
 
   const model = ref({
     items: [],
     rules: [(v) => !!v || 'Model is required'],
     label: 'Models',
-    endpoint: 'AssemblyDell/GetModels'
+    endpoint: 'Dell/Sop/AssemblyModel/Get'
   })
 
   const line = ref({
@@ -38,7 +38,7 @@
       (v) => v.length > 0 || 'At least one line is required'
     ],
     label: 'Lines',
-    endpoint: 'AssemblyDell/GetLines'
+    endpoint: 'Dell/Sop/AssemblyLine/Get'
   })
 
   const handleModel = (value) => {

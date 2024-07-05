@@ -13,15 +13,15 @@
     titleForm: 'Create Station',
     textFormButton: 'Create station',
     formInputs: {},
-    endpointGet: 'AssemblyDell/GetStations',
-    endpointDelete: 'AssemblyDell/DeleteStation',
-    endpointCreate: 'AssemblyDell/CreateStation'
+    endpointGet: 'Dell/Sop/AssemblyStation/Get',
+    endpointDelete: 'Dell/Sop/AssemblyStation/Delete',
+    endpointCreate: 'Dell/Sop/AssemblyStation/Create'
   })
 
   const editForm = ref({
     title: 'Update Station',
     buttonText: 'Update station',
-    endpoint: 'AssemblyDell/UpdateStation',
+    endpoint: 'Dell/Sop/AssemblyStation/Update',
     data: {}
   })
 
@@ -49,7 +49,10 @@
       :rules="[(value) => !!value || 'Station name is required']"
     />
   </GenericForm>
-  <AdminTemplate v-bind="data">
+  <AdminTemplate
+    v-bind="data"
+    v-model:reload="reload"
+  >
     <v-text-field
       autofocus
       v-model="data.formInputs.StationName"

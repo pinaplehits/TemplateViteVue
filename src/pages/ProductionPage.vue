@@ -18,10 +18,10 @@
   const isFullscreen = ref(false)
   const images = ref()
 
-  const endpointGetStations = 'AssemblyDell/GetStations'
-  const endpointGetAreas = 'AssemblyDell/GetAreas'
-  const endpointGetLines = 'AssemblyDell/GetLines'
-  const endpointSearchSop = 'AssemblyDell/GetSopForProduction'
+  const endpointGetStations = 'Dell/Sop/AssemblyStation/Get'
+  const endpointGetAreas = 'Dell/Sop/AssemblyArea/Get'
+  const endpointGetLines = 'Dell/Sop/AssemblyLine/Get'
+  const endpointSearchSop = 'Dell/Sop/AssemblySop/Show'
 
   const getStations = async () => {
     itemsStation.value = sortDataByKey(
