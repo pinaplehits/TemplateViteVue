@@ -12,6 +12,7 @@
   const project = ref([])
   const idSop = useRoute().params.id
   const showEditForm = ref(false)
+  const reload = ref(false)
 
   const data = ref({
     idSop,
@@ -45,6 +46,7 @@
       console.error(error)
     } finally {
       loading.value = false
+      reload.value = false
     }
   }
 
@@ -52,11 +54,16 @@
 
   watch(showEditForm, (newValue) => {
     if (newValue) {
+      editForm.value.data.SopId = idSop
       editForm.value.data.ProjectName = project.value.Project
       editForm.value.data.ModelId = project.value.idModel
       editForm.value.data.AreaId = project.value.idArea
       editForm.value.data.LinesId = project.value.idLine.split(',').map(Number)
     }
+  })
+
+  watch(reload, (newValue) => {
+    if (newValue) loadData()
   })
 </script>
 
