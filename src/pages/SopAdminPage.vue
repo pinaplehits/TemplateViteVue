@@ -44,6 +44,14 @@
       v-model="data.formInputs.AreaId"
       class="mb-2"
     />
-    <LineAutocomplete v-model="data.formInputs.LinesId" />
+    <LineAutocomplete
+      v-model="data.formInputs.LinesId"
+      chips
+      multiple
+      :rules="[
+        (v) => !!v || 'At least one line is required',
+        (v) => v.length > 0 || 'At least one line is required'
+      ]"
+    />
   </AdminTemplate>
 </template>

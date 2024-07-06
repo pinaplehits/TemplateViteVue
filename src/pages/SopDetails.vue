@@ -89,7 +89,15 @@
       v-model="editForm.data.AreaId"
       class="mb-2"
     />
-    <LineAutocomplete v-model="editForm.data.LinesId" />
+    <LineAutocomplete
+      v-model="editForm.data.LinesId"
+      chips
+      multiple
+      :rules="[
+        (v) => !!v || 'At least one line is required',
+        (v) => v.length > 0 || 'At least one line is required'
+      ]"
+    />
   </GenericForm>
   <DetailsTemplate v-bind="data">
     <template #info>

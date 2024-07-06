@@ -36,13 +36,7 @@
     :loading="loading"
     :items="items"
     item-value="id"
-    :rules="[
-      (v) => !!v || 'At least one line is required',
-      (v) => v.length > 0 || 'At least one line is required'
-    ]"
     label="Lines"
     item-title="Name"
-    chips
-    multiple
   />
 </template>

@@ -4,7 +4,7 @@
   import { sortDataByKey } from '@utils/sortUtils.js'
 
   const props = defineProps({
-    idSop: { type: String, required: true }
+    endpoint: { type: String, required: true }
   })
 
   const loading = defineModel('loading', { type: Boolean, default: false })
@@ -12,11 +12,9 @@
   const reload = defineModel('reload', { type: Boolean, default: false })
 
   const loadData = async () => {
-    const endpoint = `Dell/Sop/AssemblyStation/GetUnassignedForSop/${props.idSop}`
-
     loading.value = true
     try {
-      const response = await apiClient.get(endpoint)
+      const response = await apiClient.get(props.endpoint)
       items.value = sortDataByKey(response.items, 'Station')
     } catch (error) {
       console.error(error)

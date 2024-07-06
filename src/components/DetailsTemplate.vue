@@ -180,7 +180,7 @@
             class="mt-6"
             max-width="450"
             v-model:reload="reload"
-            :id-sop="idSop"
+            :endpoint="`Dell/Sop/AssemblyStation/GetUnassignedForSop/${idSop}`"
             v-model="stations.selected"
             :loading="stations.loading"
             color="primary"
