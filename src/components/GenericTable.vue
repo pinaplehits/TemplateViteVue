@@ -211,7 +211,7 @@
 
 <style scoped>
   .v-data-table {
-    height: calc(91vh - 145px);
+    height: calc(90vh - 145px);
   }
 
   :deep(th) {

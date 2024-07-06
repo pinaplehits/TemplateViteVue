@@ -3,32 +3,32 @@
   import apiClient from '@utils/axiosConfig.js'
   import { useGlobalStore } from '@stores/globalStore.js'
   import GenericTable from '@components/GenericTable.vue'
-  import GenericForm from '@components/GenericForm.vue'
   import ConfirmPassword from '@components/ConfirmPassword.vue'
-  import GenericAutocomplete from '@components/GenericAutocomplete.vue'
-  import { sortDataByKey } from '@utils/sortUtils.js'
+  import StationAutocomplete from '@components/StationAutocomplete.vue'
 
   const search = ref('')
   const searchFocused = ref(false)
-  const showForm = ref(false)
   const showConfirmPassword = ref(false)
   const currentItem = ref({})
-  const loadingFileUpload = ref(false)
-  const fileSelected = ref({})
   const showCarousel = ref(false)
-  const images = ref('')
+  const images = ref(null)
   const items = ref([])
-  const currentStations = ref([])
-  const loadingAddStation = ref(false)
+
+  const stations = ref({
+    selected: [],
+    loading: false
+  })
+
+  const fileUpload = ref({
+    selected: {},
+    loading: false
+  })
 
   const reload = defineModel('reload', { type: Boolean, default: false })
 
   const props = defineProps({
     idSop: { type: String, required: true },
     textAddButton: { type: String, required: true },
-    titleForm: { type: String, required: true },
-    textFormButton: { type: String, required: true },
-    formInputs: { type: Object, required: true },
     endpointGet: { type: String, required: true },
     endpointDelete: { type: String, required: true },
     endpointUpdate: { type: String, required: true },
@@ -46,19 +46,6 @@
   const dataConfirmPassword = ref({
     endpoint: props.endpointDelete,
     data: currentItem.value
-  })
-
-  const form = ref({
-    title: props.titleForm,
-    buttonText: props.textFormButton,
-    endpoint: props.endpointUpdate,
-    data: props.formInputs
-  })
-
-  const autoComplete = ref({
-    itemTitle: 'Station',
-    label: 'Stations',
-    endpoint: `Dell/Sop/AssemblyStation/GetUnassignedForSop/${props.idSop}`
   })
 
   const deleteItem = (item) => {
@@ -94,44 +81,44 @@
       return
     }
 
-    loadingFileUpload.value = true
+    fileUpload.value.loading = true
     const formData = new FormData()
     formData.append('PowerPoint', file)
     formData.append('IdStation', idStation)
     formData.append('IdSop', props.idSop)
 
     try {
-      await apiClient.post('AssemblyDell/SlidesToImages', formData, {
+      await apiClient.post('Dell/Sop/AssemblyStation/Upload', formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }
       })
-      fileSelected.value[idStation] = null
+      fileUpload.value.selected[idStation] = null
 
       reload.value = true
     } catch (error) {
       console.error('Error uploading file', error)
     } finally {
-      loadingFileUpload.value = false
+      fileUpload.value.loading = false
     }
   }
 
   const addStation = async () => {
-    loadingAddStation.value = true
+    stations.value.loading = true
     try {
       const data = {
         SopId: props.idSop,
-        StationsId: currentStations.value
+        StationsId: stations.value.selected
       }
 
       await apiClient.post(props.endpointAddStation, data)
 
-      currentStations.value = []
+      stations.value.selected = []
       reload.value = true
     } catch (error) {
       console.error(error)
     } finally {
-      loadingAddStation.value = false
+      stations.value.loading = false
     }
   }
 </script>
@@ -160,13 +147,6 @@
     v-bind="dataConfirmPassword"
     @success="reload = true"
   />
-  <GenericForm
-    v-model:showForm="showForm"
-    v-bind="form"
-    @submit-success="reload = true"
-  >
-    <slot name="form" />
-  </GenericForm>
   <v-container fill-height>
     <slot name="info" />
     <v-card elevation="4">
@@ -196,12 +176,13 @@
             />
           </v-col>
           <v-spacer />
-          <GenericAutocomplete
+          <StationAutocomplete
+            class="mt-6"
+            max-width="450"
             v-model:reload="reload"
-            v-model="currentStations"
-            :loading="loadingAddStation"
-            v-bind="autoComplete"
-            @success="sortDataByKey($event.items, 'Station')"
+            :id-sop="idSop"
+            v-model="stations.selected"
+            :loading="stations.loading"
             color="primary"
             density="compact"
             variant="outlined"
@@ -215,7 +196,7 @@
               prepend-icon="mdi-plus"
               @click.stop="addStation"
               :text="props.textAddButton"
-              :disabled="currentStations.length === 0 || loadingAddStation"
+              :disabled="stations.selected.length === 0 || stations.loading"
             />
           </v-col>
         </v-row>
@@ -242,7 +223,7 @@
         <template #upload="{ item }">
           <td>
             <v-file-input
-              v-model="fileSelected[item.id]"
+              v-model="fileUpload.selected[item.id]"
               class="mt-2 mb-n3"
               accept=".pptx"
               variant="outlined"
@@ -250,19 +231,21 @@
               chips
               density="compact"
               :prepend-inner-icon="
-                fileSelected[item.id] ? '' : 'mdi-file-document-plus-outline'
+                fileUpload.selected[item.id]
+                  ? ''
+                  : 'mdi-file-document-plus-outline'
               "
               :append-icon="
-                fileSelected[item.id] ? 'mdi-file-upload-outline' : ''
+                fileUpload.selected[item.id] ? 'mdi-file-upload-outline' : ''
               "
               @click:append="
-                fileSelected[item.id] &&
-                  uploadFile(fileSelected[item.id], item.id)
+                fileUpload.selected[item.id] &&
+                  uploadFile(fileUpload.selected[item.id], item.id)
               "
               max-width="300"
               color="primary"
-              :disabled="loadingFileUpload"
-              :loading="loadingFileUpload"
+              :disabled="fileUpload.loading"
+              :loading="fileUpload.loading"
             />
           </td>
         </template>

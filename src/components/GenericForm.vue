@@ -16,7 +16,7 @@
     },
     buttonText: { type: String, required: true },
     endpoint: { type: String, required: true },
-    data: { type: Object, required: true }
+    data: { type: Object, default: () => {} }
   })
 
   const form = ref(null)
