@@ -39,13 +39,30 @@
             />
           </template>
         </v-list-item>
-        <v-list-item
-          v-for="route in navRoutes"
-          :key="route.name"
-          :to="route.path"
-          :title="route.name"
-          prepend-icon="mdi-currency-eth"
-        />
+        <v-list-group
+          title="Test"
+          fluid
+        >
+          <template #activator="{ props, isOpen }">
+            <v-list-item
+              v-bind="props"
+              title="Assembly Dell"
+              :prepend-icon="
+                isOpen
+                  ? 'mdi-arrange-bring-forward'
+                  : 'mdi-arrange-send-backward'
+              "
+            />
+          </template>
+          <v-list-item
+            v-for="route in navRoutes"
+            :key="route.name"
+            :to="route.path"
+            :title="route.name"
+            prepend-icon="mdi-currency-eth"
+            :class="rail || isHovered ? 'ml-2' : ''"
+          />
+        </v-list-group>
       </v-list>
       <template #append>
         <div class="pa-2">
