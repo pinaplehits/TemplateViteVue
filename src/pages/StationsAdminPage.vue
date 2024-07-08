@@ -7,6 +7,7 @@
   const reload = ref(false)
 
   const data = ref({
+    sortKey: 'Station',
     title: 'Stations Management',
     subtitle: 'Manage and organize station for Assembly Dell projects',
     textAddButton: 'Create station',

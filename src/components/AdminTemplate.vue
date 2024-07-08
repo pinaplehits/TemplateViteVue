@@ -13,6 +13,7 @@
   const reload = defineModel('reload', { type: Boolean, default: false })
 
   const props = defineProps({
+    sortKey: { type: String, default: '' },
     title: { type: String, required: true },
     subtitle: { type: String, required: true },
     textAddButton: { type: String, required: true },
@@ -27,7 +28,8 @@
   const dataTable = ref({
     classTr: 'cursor-pointer',
     density: 'compact',
-    endpoint: props.endpointGet
+    endpoint: props.endpointGet,
+    sortKey: props.sortKey
   })
 
   const dataConfirmPassword = ref({

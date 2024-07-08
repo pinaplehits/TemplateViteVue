@@ -1,16 +1,14 @@
 <script setup>
   import { ref, onMounted, watch, inject } from 'vue'
   import { populateAdminTable } from '@utils/tableUtils'
+  import { sortDataByKey } from '@utils/sortUtils.js'
 
   const loading = ref(false)
 
   const emit = defineEmits(['deleteItem'])
 
   const search = defineModel('search', { type: String, default: '' })
-  const sortBy = defineModel('sortBy', {
-    type: Array,
-    default: () => [{ key: 'Station', order: 'asc' }]
-  })
+  const sortBy = defineModel('sortBy', { type: Array, default: [] })
   const selected = defineModel('selected', { type: Array, default: () => [] })
   const items = defineModel('items', { type: Array, default: () => [] })
   const headers = defineModel('headers', { type: Array, default: () => [] })
@@ -25,7 +23,8 @@
       type: Array,
       default: () => ['Actions', 'Upload', 'Download', 'Images']
     },
-    addHeaders: { type: Array, default: () => [{}] }
+    addHeaders: { type: Array, default: () => [{}] },
+    sortKey: { type: String, default: '' }
   })
 
   const loadData = async () => {
@@ -36,7 +35,7 @@
 
       if (!response.headers) return
 
-      items.value = response.items
+      items.value = sortDataByKey(response.items, props.sortKey)
       headers.value = response.headers
 
       const actionsIndex = headers.value.findIndex(
