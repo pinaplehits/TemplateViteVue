@@ -1,4 +1,6 @@
-export default [
+import sopAssyRoutes from '@router/sopAssemblyDell.js'
+
+const defaultRoutes = [
   {
     path: '/login',
     name: 'Login',
@@ -13,47 +15,16 @@ export default [
     path: '/:catchAll(.*)',
     name: 'NotFound',
     component: () => import('@pages/NotFoundPage.vue')
-  },
-  {
-    path: '/sops',
-    name: 'SOP',
-    component: () => import('@pages/SopAdminPage.vue'),
-    meta: { requiresAuthentication: true, showInNav: true }
-  },
-  {
-    path: '/sops/:id',
-    name: 'SOP details',
-    component: () => import('@pages/SopDetails.vue'),
-    meta: { requiresAuthentication: true }
-  },
-  {
-    path: '/areas',
-    name: 'Areas',
-    component: () => import('@pages/AreasAdminPage.vue'),
-    meta: { requiresAuthentication: true, showInNav: true }
-  },
-  {
-    path: '/models',
-    name: 'Models',
-    component: () => import('@pages/ModelsAdminPage.vue'),
-    meta: { requiresAuthentication: true, showInNav: true }
-  },
-  {
-    path: '/stations',
-    name: 'Stations',
-    component: () => import('@pages/StationsAdminPage.vue'),
-    meta: { requiresAuthentication: true, showInNav: true }
-  },
-  {
-    path: '/lines',
-    name: 'Lines',
-    component: () => import('@pages/LinesAdminPage.vue'),
-    meta: { requiresAuthentication: true, showInNav: true }
-  },
-  {
-    path: '/production',
-    name: 'Production',
-    component: () => import('@pages/ProductionPage.vue'),
-    meta: { requiresAuthentication: true, showInNav: true }
   }
 ]
+
+const routes = [...defaultRoutes, ...sopAssyRoutes].map((route) => ({
+  ...route,
+  meta: {
+    requiresAuthentication: true,
+    restrictIfAuthenticated: false,
+    ...route.meta
+  }
+}))
+
+export default routes
