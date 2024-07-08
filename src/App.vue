@@ -6,6 +6,7 @@
   import { useNavStore } from '@stores/navStore.js'
 
   const isLoggedIn = toRef(useAuthStore(), 'isLoggedIn')
+  const user = toRef(useAuthStore(), 'user')
   const rail = toRef(useNavStore(), 'rail')
   const isHovered = ref(false)
 
@@ -27,8 +28,8 @@
       <v-list nav>
         <v-list-item
           prepend-icon="mdi-account-outline"
-          title="Roberto Piña"
-          subtitle="roberto.pina@foxconn.com"
+          :title="user?.name"
+          :subtitle="user?.email"
         >
           <template #append>
             <v-radio
@@ -71,7 +72,9 @@
             @click="useAuthStore().logout"
             append-icon="mdi-logout"
           >
-            <template v-if="rail || isHovered">Logout</template>
+            <template v-if="rail || isHovered">
+              Logout
+            </template>
           </v-btn>
         </div>
       </template>
