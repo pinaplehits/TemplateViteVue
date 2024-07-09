@@ -1,4 +1,5 @@
-import sopAssyRoutes from '@router/sopAssemblyDell.js'
+// import sopAssyDellRoutes from '@router/sopAssemblyDell.js'
+import sopAssyHpRoutes from '@router/sopAssemblyHp.js'
 
 const defaultRoutes = [
   {
@@ -18,7 +19,7 @@ const defaultRoutes = [
   }
 ]
 
-const routes = [...defaultRoutes, ...sopAssyRoutes].map((route) => ({
+const routes = [...defaultRoutes, ...sopAssyHpRoutes].map((route) => ({
   ...route,
   meta: {
     requiresAuthentication: true,

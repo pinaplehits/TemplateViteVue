@@ -1,27 +1,27 @@
 <script setup>
   import { ref, provide } from 'vue'
-  import AdminTemplate from '@components/AssemblyDell/AdminTemplate.vue'
-  import GenericForm from '@components/AssemblyDell/GenericForm.vue'
+  import AdminTemplate from '@components/AssemblyHp/AdminTemplate.vue'
+  import GenericForm from '@components/AssemblyHp/GenericForm.vue'
 
   const showEditForm = ref(false)
   const reload = ref(false)
 
   const data = ref({
     title: 'Lines Management',
-    subtitle: 'Manage and organize line for Assembly Dell projects',
+    subtitle: 'Manage and organize line for Assembly HP projects',
     textAddButton: 'Create line',
     titleForm: 'Create Line',
     textFormButton: 'Create line',
     formInputs: {},
-    endpointGet: 'Dell/Sop/AssemblyLine/Get',
-    endpointDelete: 'Dell/Sop/AssemblyLine/Delete',
-    endpointCreate: 'Dell/Sop/AssemblyLine/Create'
+    endpointGet: 'Hp/Sop/AssemblyHpLine/Get',
+    endpointDelete: 'Hp/Sop/AssemblyHpLine/Delete',
+    endpointCreate: 'Hp/Sop/AssemblyHpLine/Create'
   })
 
   const editForm = ref({
     title: 'Update Line',
     buttonText: 'Update line',
-    endpoint: 'Dell/Sop/AssemblyLine/Update',
+    endpoint: 'Hp/Sop/AssemblyHpLine/Update',
     data: {}
   })
 

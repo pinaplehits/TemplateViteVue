@@ -1,22 +1,22 @@
 <script setup>
   import { ref, provide } from 'vue'
   import router from '@router/index.js'
-  import AdminTemplate from '@components/AssemblyDell/AdminTemplate.vue'
-  import LineAutocomplete from '@components/AssemblyDell/LineAutocomplete.vue'
-  import ModelAutocomplete from '@components/AssemblyDell/ModelAutocomplete.vue'
-  import AreaAutocomplete from '@components/AssemblyDell/AreaAutocomplete.vue'
+  import AdminTemplate from '@components/AssemblyHp/AdminTemplate.vue'
+  import LineAutocomplete from '@components/AssemblyHp/LineAutocomplete.vue'
+  import ModelAutocomplete from '@components/AssemblyHp/ModelAutocomplete.vue'
+  import AreaAutocomplete from '@components/AssemblyHp/AreaAutocomplete.vue'
 
   const data = ref({
     title: 'SOPs Management',
     subtitle:
-      'Manage and organize Standard Operating Procedures for Assembly Dell projects',
+      'Manage and organize Standard Operating Procedures for Assembly HP projects',
     textAddButton: 'Create project',
     titleForm: 'Create Project',
     textFormButton: 'Create project',
     formInputs: {},
-    endpointGet: 'Dell/Sop/AssemblySop/Get',
-    endpointDelete: 'Dell/Sop/AssemblySop/Delete',
-    endpointCreate: 'Dell/Sop/AssemblySop/Create'
+    endpointGet: 'Hp/Sop/AssemblyHpSop/Get',
+    endpointDelete: 'Hp/Sop/AssemblyHpSop/Delete',
+    endpointCreate: 'Hp/Sop/AssemblyHpSop/Create'
   })
 
   const handleDetailItem = (item) => {

@@ -47,7 +47,7 @@
           <template #activator="{ props, isOpen }">
             <v-list-item
               v-bind="props"
-              title="Assembly Dell"
+              title="Assembly HP"
               :prepend-icon="
                 isOpen
                   ? 'mdi-arrange-bring-forward'
@@ -72,9 +72,7 @@
             @click="useAuthStore().logout"
             append-icon="mdi-logout"
           >
-            <template v-if="rail || isHovered">
-              Logout
-            </template>
+            <template v-if="rail || isHovered">Logout</template>
           </v-btn>
         </div>
       </template>

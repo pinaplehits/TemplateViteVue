@@ -2,9 +2,9 @@
   import { ref } from 'vue'
   import apiClient from '@utils/axiosConfig.js'
   import { useGlobalStore } from '@stores/globalStore.js'
-  import GenericTable from '@components/GenericTable.vue'
-  import ConfirmPassword from '@components/ConfirmPassword.vue'
-  import StationAutocomplete from '@components/StationAutocomplete.vue'
+  import GenericTable from '@components/AssemblyDell/GenericTable.vue'
+  import ConfirmPassword from '@components/AssemblyDell/ConfirmPassword.vue'
+  import StationAutocomplete from '@components/AssemblyDell/StationAutocomplete.vue'
 
   const search = ref('')
   const searchFocused = ref(false)

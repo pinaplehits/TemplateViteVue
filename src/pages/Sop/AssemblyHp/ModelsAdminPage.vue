@@ -1,27 +1,27 @@
 <script setup>
   import { ref, provide } from 'vue'
-  import AdminTemplate from '@components/AssemblyDell/AdminTemplate.vue'
-  import GenericForm from '@components/AssemblyDell/GenericForm.vue'
+  import AdminTemplate from '@components/AssemblyHp/AdminTemplate.vue'
+  import GenericForm from '@components/AssemblyHp/GenericForm.vue'
 
   const showEditForm = ref(false)
   const reload = ref(false)
 
   const data = ref({
     title: 'Models Management',
-    subtitle: 'Manage and organize model for Assembly Dell projects',
+    subtitle: 'Manage and organize model for Assembly HP projects',
     textAddButton: 'Create model',
     titleForm: 'Create Model',
     textFormButton: 'Create model',
     formInputs: {},
-    endpointGet: 'Dell/Sop/AssemblyModel/Get',
-    endpointDelete: 'Dell/Sop/AssemblyModel/Delete',
-    endpointCreate: 'Dell/Sop/AssemblyModel/Create'
+    endpointGet: 'Hp/Sop/AssemblyHpModel/Get',
+    endpointDelete: 'Hp/Sop/AssemblyHpModel/Delete',
+    endpointCreate: 'Hp/Sop/AssemblyHpModel/Create'
   })
 
   const editForm = ref({
     title: 'Update Model',
     buttonText: 'Update model',
-    endpoint: 'Dell/Sop/AssemblyModel/Update',
+    endpoint: 'Hp/Sop/AssemblyHpModel/Update',
     data: {}
   })
 

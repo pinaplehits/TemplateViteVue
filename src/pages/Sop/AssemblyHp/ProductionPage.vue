@@ -1,8 +1,8 @@
 <script setup>
   import { ref, onMounted, watch, onUnmounted } from 'vue'
-  import LineAutocomplete from '@components/AssemblyDell/LineAutocomplete.vue'
-  import StationAutocomplete from '@components/AssemblyDell/StationAutocomplete.vue'
-  import AreaAutocomplete from '@components/AssemblyDell/AreaAutocomplete.vue'
+  import LineAutocomplete from '@components/AssemblyHp/LineAutocomplete.vue'
+  import StationAutocomplete from '@components/AssemblyHp/StationAutocomplete.vue'
+  import AreaAutocomplete from '@components/AssemblyHp/AreaAutocomplete.vue'
   import apiClient from '@utils/axiosConfig.js'
   import { useGlobalStore } from '@stores/globalStore.js'
 
@@ -14,7 +14,7 @@
   const images = ref()
 
   const data = ref({})
-  const endpointSearchSop = 'Dell/Sop/AssemblySop/Show'
+  const endpointSearchSop = 'Hp/Sop/AssemblyHpSop/Show'
 
   const searchSop = async () => {
     loading.value = true
@@ -25,7 +25,7 @@
 
       const { items } = await apiClient.post(endpointSearchSop, data.value)
 
-      images.value = useGlobalStore().imageSopAssyDellUrl(
+      images.value = useGlobalStore().imageSopAssyHpUrl(
         items[0].IdDoc,
         items[0].IdStation,
         items[0].Images
@@ -160,7 +160,7 @@
             v-model="data.IdStation"
             max-width="600"
             :rules="[(value) => !!value || 'Station is required']"
-            endpoint="Dell/Sop/AssemblyStation/Get"
+            endpoint="Hp/Sop/AssemblyHpStation/Get"
           />
         </v-col>
       </v-row>

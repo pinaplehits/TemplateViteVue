@@ -2,11 +2,11 @@
   import { ref, onMounted, watch } from 'vue'
   import { useRoute } from 'vue-router'
   import apiClient from '@utils/axiosConfig.js'
-  import GenericForm from '@components/AssemblyDell/GenericForm.vue'
-  import LineAutocomplete from '@components/AssemblyDell/LineAutocomplete.vue'
-  import ModelAutocomplete from '@components/AssemblyDell/ModelAutocomplete.vue'
-  import AreaAutocomplete from '@components/AssemblyDell/AreaAutocomplete.vue'
-  import DetailsTemplate from '@components/AssemblyDell/DetailsTemplate.vue'
+  import GenericForm from '@components/AssemblyHp/GenericForm.vue'
+  import LineAutocomplete from '@components/AssemblyHp/LineAutocomplete.vue'
+  import ModelAutocomplete from '@components/AssemblyHp/ModelAutocomplete.vue'
+  import AreaAutocomplete from '@components/AssemblyHp/AreaAutocomplete.vue'
+  import DetailsTemplate from '@components/AssemblyHp/DetailsTemplate.vue'
 
   const loading = ref(false)
   const project = ref([])
@@ -17,20 +17,20 @@
   const data = ref({
     idSop,
     textAddButton: 'Add station',
-    endpointGet: `Dell/Sop/AssemblySop/GetDetails/${idSop}`,
-    endpointDelete: 'Dell/Sop/AssemblyStation/DeleteInSop',
+    endpointGet: `Hp/Sop/AssemblyHpSop/GetDetails/${idSop}`,
+    endpointDelete: 'Hp/Sop/AssemblyHpStation/DeleteInSop',
     endpointUpdate: '',
-    endpointAddStation: 'Dell/Sop/AssemblyStation/AddToSop'
+    endpointAddStation: 'Hp/Sop/AssemblyHpStation/AddToSop'
   })
 
   const editForm = ref({
     title: 'Update Project',
     buttonText: 'Update project',
-    endpoint: 'Dell/Sop/AssemblySop/Update',
+    endpoint: 'Hp/Sop/AssemblyHpSop/Update',
     data: {}
   })
 
-  const endpointGet = `Dell/Sop/AssemblySop/GetById/${idSop}`
+  const endpointGet = `Hp/Sop/AssemblyHpSop/GetById/${idSop}`
 
   const getProjectInfo = async () => {
     const { items } = await apiClient.get(endpointGet)

@@ -1,7 +1,7 @@
 <script setup>
   import { ref, provide } from 'vue'
-  import AdminTemplate from '@components/AssemblyDell/AdminTemplate.vue'
-  import GenericForm from '@components/AssemblyDell/GenericForm.vue'
+  import AdminTemplate from '@components/AssemblyHp/AdminTemplate.vue'
+  import GenericForm from '@components/AssemblyHp/GenericForm.vue'
 
   const showEditForm = ref(false)
   const reload = ref(false)
@@ -9,20 +9,20 @@
   const data = ref({
     sortKey: 'Station',
     title: 'Stations Management',
-    subtitle: 'Manage and organize station for Assembly Dell projects',
+    subtitle: 'Manage and organize station for Assembly HP projects',
     textAddButton: 'Create station',
     titleForm: 'Create Station',
     textFormButton: 'Create station',
     formInputs: {},
-    endpointGet: 'Dell/Sop/AssemblyStation/Get',
-    endpointDelete: 'Dell/Sop/AssemblyStation/Delete',
-    endpointCreate: 'Dell/Sop/AssemblyStation/Create'
+    endpointGet: 'Hp/Sop/AssemblyHpStation/Get',
+    endpointDelete: 'Hp/Sop/AssemblyHpStation/Delete',
+    endpointCreate: 'Hp/Sop/AssemblyHpStation/Create'
   })
 
   const editForm = ref({
     title: 'Update Station',
     buttonText: 'Update station',
-    endpoint: 'Dell/Sop/AssemblyStation/Update',
+    endpoint: 'Hp/Sop/AssemblyHpStation/Update',
     data: {}
   })
 

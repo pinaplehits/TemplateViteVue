@@ -1,27 +1,27 @@
 <script setup>
   import { ref, provide } from 'vue'
-  import AdminTemplate from '@components/AssemblyDell/AdminTemplate.vue'
-  import GenericForm from '@components/AssemblyDell/GenericForm.vue'
+  import AdminTemplate from '@components/AssemblyHp/AdminTemplate.vue'
+  import GenericForm from '@components/AssemblyHp/GenericForm.vue'
 
   const showEditForm = ref(false)
   const reload = ref(false)
 
   const data = ref({
     title: 'Areas Management',
-    subtitle: 'Manage and organize area for Assembly Dell projects',
+    subtitle: 'Manage and organize area for Assembly HP projects',
     textAddButton: 'Create area',
     titleForm: 'Create Area',
     textFormButton: 'Create area',
     formInputs: {},
-    endpointGet: 'Dell/Sop/AssemblyArea/Get',
-    endpointDelete: 'Dell/Sop/AssemblyArea/Delete',
-    endpointCreate: 'Dell/Sop/AssemblyArea/Create'
+    endpointGet: 'Hp/Sop/AssemblyHpArea/Get',
+    endpointDelete: 'Hp/Sop/AssemblyHpArea/Delete',
+    endpointCreate: 'Hp/Sop/AssemblyHpArea/Create'
   })
 
   const editForm = ref({
     title: 'Update Area',
     buttonText: 'Update area',
-    endpoint: 'Dell/Sop/AssemblyArea/Update',
+    endpoint: 'Hp/Sop/AssemblyHpArea/Update',
     data: {}
   })
 
