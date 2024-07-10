@@ -2,9 +2,9 @@
   import { ref } from 'vue'
   import apiClient from '@utils/axiosConfig.js'
   import { useGlobalStore } from '@stores/globalStore.js'
-  import GenericTable from '@components/AssemblyDell/GenericTable.vue'
-  import ConfirmPassword from '@components/AssemblyDell/ConfirmPassword.vue'
-  import StationAutocomplete from '@components/AssemblyDell/StationAutocomplete.vue'
+  import GenericTable from '@components/Sop/AssemblyHp/GenericTable.vue'
+  import ConfirmPassword from '@components/Sop/AssemblyHp/ConfirmPassword.vue'
+  import StationAutocomplete from '@components/Sop/AssemblyHp/StationAutocomplete.vue'
 
   const search = ref('')
   const searchFocused = ref(false)
@@ -55,7 +55,7 @@
   }
 
   const downloadSop = async (idStation) => {
-    const url = useGlobalStore().pptxSopAssyDellUrl(props.idSop, idStation)
+    const url = useGlobalStore().pptxSopAssyHpUrl(props.idSop, idStation)
 
     window.open(url, '_blank')
   }
@@ -63,7 +63,7 @@
   const showImages = async (idStation) => {
     const station = items.value.find((item) => item.id === idStation)
 
-    images.value = useGlobalStore().imageSopAssyDellUrl(
+    images.value = useGlobalStore().imageSopAssyHpUrl(
       props.idSop,
       station.id,
       station.Images
@@ -88,7 +88,7 @@
     formData.append('IdSop', props.idSop)
 
     try {
-      await apiClient.post('Dell/Sop/AssemblyStation/Upload', formData, {
+      await apiClient.post('Hp/Sop/AssemblyHpStation/Upload', formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }
@@ -180,7 +180,7 @@
             class="mt-6"
             max-width="450"
             v-model:reload="reload"
-            :endpoint="`Dell/Sop/AssemblyStation/GetUnassignedForSop/${idSop}`"
+            :endpoint="`Hp/Sop/AssemblyHpStation/GetUnassignedForSop/${idSop}`"
             v-model="stations.selected"
             :loading="stations.loading"
             color="primary"

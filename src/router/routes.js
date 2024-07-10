@@ -1,4 +1,3 @@
-// import sopAssyDellRoutes from '@router/sopAssemblyDell.js'
 import sopAssyHpRoutes from '@router/sopAssemblyHp.js'
 
 const defaultRoutes = [

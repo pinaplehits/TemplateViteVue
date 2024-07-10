@@ -1,7 +1,7 @@
 <script setup>
   import { ref, provide } from 'vue'
-  import AdminTemplate from '@components/AssemblyHp/AdminTemplate.vue'
-  import GenericForm from '@components/AssemblyHp/GenericForm.vue'
+  import AdminTemplate from '@components/Sop/AssemblyHp/AdminTemplate.vue'
+  import GenericForm from '@components/Sop/AssemblyHp/GenericForm.vue'
 
   const showEditForm = ref(false)
   const reload = ref(false)

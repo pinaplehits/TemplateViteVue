@@ -1,8 +1,8 @@
 <script setup>
   import { ref, onMounted, watch, onUnmounted } from 'vue'
-  import LineAutocomplete from '@components/AssemblyHp/LineAutocomplete.vue'
-  import StationAutocomplete from '@components/AssemblyHp/StationAutocomplete.vue'
-  import ModelAutocomplete from '@components/AssemblyHp/ModelAutocomplete.vue'
+  import LineAutocomplete from '@components/Sop/AssemblyHp/LineAutocomplete.vue'
+  import StationAutocomplete from '@components/Sop/AssemblyHp/StationAutocomplete.vue'
+  import ModelAutocomplete from '@components/Sop/AssemblyHp/ModelAutocomplete.vue'
   import apiClient from '@utils/axiosConfig.js'
   import { useGlobalStore } from '@stores/globalStore.js'
 

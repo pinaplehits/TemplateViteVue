@@ -1,10 +1,10 @@
 <script setup>
   import { ref, provide } from 'vue'
   import router from '@router/index.js'
-  import AdminTemplate from '@components/AssemblyHp/AdminTemplate.vue'
-  import LineAutocomplete from '@components/AssemblyHp/LineAutocomplete.vue'
-  import ModelAutocomplete from '@components/AssemblyHp/ModelAutocomplete.vue'
-  import AreaAutocomplete from '@components/AssemblyHp/AreaAutocomplete.vue'
+  import AdminTemplate from '@components/Sop/AssemblyHp/AdminTemplate.vue'
+  import LineAutocomplete from '@components/Sop/AssemblyHp/LineAutocomplete.vue'
+  import ModelAutocomplete from '@components/Sop/AssemblyHp/ModelAutocomplete.vue'
+  import AreaAutocomplete from '@components/Sop/AssemblyHp/AreaAutocomplete.vue'
 
   const data = ref({
     title: 'SOPs Management',

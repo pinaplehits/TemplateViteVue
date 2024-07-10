@@ -1,8 +1,8 @@
 <script setup>
   import { ref } from 'vue'
-  import GenericTable from '@components/AssemblyDell/GenericTable.vue'
-  import GenericForm from '@components/AssemblyDell/GenericForm.vue'
-  import ConfirmPassword from '@components/AssemblyDell/ConfirmPassword.vue'
+  import GenericTable from '@components/Sop/AssemblyHp/GenericTable.vue'
+  import GenericForm from '@components/Sop/AssemblyHp/GenericForm.vue'
+  import ConfirmPassword from '@components/Sop/AssemblyHp/ConfirmPassword.vue'
 
   const search = ref('')
   const searchFocused = ref(false)

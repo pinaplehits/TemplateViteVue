@@ -2,11 +2,11 @@
   import { ref, onMounted, watch } from 'vue'
   import { useRoute } from 'vue-router'
   import apiClient from '@utils/axiosConfig.js'
-  import GenericForm from '@components/AssemblyHp/GenericForm.vue'
-  import LineAutocomplete from '@components/AssemblyHp/LineAutocomplete.vue'
-  import ModelAutocomplete from '@components/AssemblyHp/ModelAutocomplete.vue'
-  import AreaAutocomplete from '@components/AssemblyHp/AreaAutocomplete.vue'
-  import DetailsTemplate from '@components/AssemblyHp/DetailsTemplate.vue'
+  import GenericForm from '@components/Sop/AssemblyHp/GenericForm.vue'
+  import LineAutocomplete from '@components/Sop/AssemblyHp/LineAutocomplete.vue'
+  import ModelAutocomplete from '@components/Sop/AssemblyHp/ModelAutocomplete.vue'
+  import AreaAutocomplete from '@components/Sop/AssemblyHp/AreaAutocomplete.vue'
+  import DetailsTemplate from '@components/Sop/AssemblyHp/DetailsTemplate.vue'
 
   const loading = ref(false)
   const project = ref([])
