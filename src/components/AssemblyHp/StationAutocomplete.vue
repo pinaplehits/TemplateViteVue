@@ -15,7 +15,7 @@
     loading.value = true
     try {
       const response = await apiClient.get(props.endpoint)
-      items.value = sortDataByKey(response.items, 'Station')
+      items.value = sortDataByKey(response.items, 'eventpoint')
     } catch (error) {
       console.error(error)
     } finally {
@@ -38,8 +38,8 @@
     :disabled="loading"
     :loading="loading"
     :items="items"
-    item-value="id"
-    item-title="Station"
+    item-value="eventpoint"
+    item-title="eventpoint"
     label="Stations"
   />
 </template>

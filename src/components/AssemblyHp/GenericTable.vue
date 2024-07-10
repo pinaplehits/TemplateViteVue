@@ -32,7 +32,6 @@
 
     try {
       const response = await populateAdminTable(props.endpoint)
-      console.log(response)
 
       if (!response.headers) return
 

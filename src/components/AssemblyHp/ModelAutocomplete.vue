@@ -12,10 +12,7 @@
     loading.value = true
     try {
       const response = await apiClient.get(endpoint)
-      items.value = response.items.map((item) => ({
-        ...item,
-        title: `${item.Model} - ${item.Platform}`
-      }))
+      items.value = response.items
     } catch (error) {
       console.error(error)
     } finally {
@@ -38,7 +35,8 @@
     :disabled="loading"
     :loading="loading"
     :items="items"
-    item-value="id"
+    item-value="plat_form"
+    item-title="plat_form"
     :rules="[(v) => !!v || 'Model is required']"
     label="Models"
   />
