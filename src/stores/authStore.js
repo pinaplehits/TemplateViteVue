@@ -8,7 +8,7 @@ import { jwtDecode } from 'jwt-decode'
 export const useAuthStore = defineStore('auth', () => {
   const storageName = 'token'
   const endpointLoginProduction = 'Authentication/LoginProduction'
-  const endpointLogin = 'Authentication/LoginAcosta'
+  const endpointLogin = 'Authentication/Login'
   const token = ref(localStorage.getItem(storageName) || null)
 
   const setToken = (newToken) => {
