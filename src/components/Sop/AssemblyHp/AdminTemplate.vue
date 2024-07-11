@@ -78,7 +78,7 @@
               v-model="search"
               density="compact"
               label="Search"
-              :prepend-inner-icon="searchFocused ? '' : 'mdi-magnify'"
+              :prepend-inner-icon="searchFocused || search ? '' : 'mdi-magnify'"
               single-line
               variant="outlined"
               flat
