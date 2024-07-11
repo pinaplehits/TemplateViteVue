@@ -149,7 +149,7 @@
       <v-row>
         <v-col>
           <ModelAutocomplete
-            v-model="data.IdArea"
+            v-model="data.IdModel"
             max-width="600"
           />
         </v-col>

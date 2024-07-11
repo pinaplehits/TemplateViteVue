@@ -4,7 +4,6 @@
   import AdminTemplate from '@components/Sop/AssemblyHp/AdminTemplate.vue'
   import LineAutocomplete from '@components/Sop/AssemblyHp/LineAutocomplete.vue'
   import ModelAutocomplete from '@components/Sop/AssemblyHp/ModelAutocomplete.vue'
-  import AreaAutocomplete from '@components/Sop/AssemblyHp/AreaAutocomplete.vue'
 
   const data = ref({
     title: 'SOPs Management',
@@ -38,10 +37,6 @@
     />
     <ModelAutocomplete
       v-model="data.formInputs.ModelId"
-      class="mb-2"
-    />
-    <AreaAutocomplete
-      v-model="data.formInputs.AreaId"
       class="mb-2"
     />
     <LineAutocomplete

@@ -14,12 +14,6 @@ const routes = [
     meta: { requiresAuthentication: true }
   },
   {
-    path: 'areas',
-    name: 'Areas',
-    component: () => import('@pages/Sop/AssemblyHp/AreasAdminPage.vue'),
-    meta: { requiresAuthentication: true, showInNav: true }
-  },
-  {
     path: 'models',
     name: 'Models',
     component: () => import('@pages/Sop/AssemblyHp/ModelsAdminPage.vue'),

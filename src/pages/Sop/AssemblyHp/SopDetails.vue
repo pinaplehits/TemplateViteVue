@@ -5,7 +5,6 @@
   import GenericForm from '@components/Sop/AssemblyHp/GenericForm.vue'
   import LineAutocomplete from '@components/Sop/AssemblyHp/LineAutocomplete.vue'
   import ModelAutocomplete from '@components/Sop/AssemblyHp/ModelAutocomplete.vue'
-  import AreaAutocomplete from '@components/Sop/AssemblyHp/AreaAutocomplete.vue'
   import DetailsTemplate from '@components/Sop/AssemblyHp/DetailsTemplate.vue'
 
   const loading = ref(false)
@@ -57,7 +56,6 @@
       editForm.value.data.SopId = idSop
       editForm.value.data.ProjectName = project.value.Project
       editForm.value.data.ModelId = project.value.idModel
-      editForm.value.data.AreaId = project.value.idArea
       editForm.value.data.LinesId = project.value.idLine.split(',').map(Number)
     }
   })
@@ -85,10 +83,6 @@
       v-model="editForm.data.ModelId"
       class="mb-2"
     />
-    <AreaAutocomplete
-      v-model="editForm.data.AreaId"
-      class="mb-2"
-    />
     <LineAutocomplete
       v-model="editForm.data.LinesId"
       chips
@@ -111,10 +105,6 @@
             <v-col>
               <v-card-title>{{ project.Model }}</v-card-title>
               <v-card-subtitle>Model</v-card-subtitle>
-            </v-col>
-            <v-col>
-              <v-card-title>{{ project.Area }}</v-card-title>
-              <v-card-subtitle>Area</v-card-subtitle>
             </v-col>
             <v-col>
               <v-card-title>{{ project.Lines }}</v-card-title>
