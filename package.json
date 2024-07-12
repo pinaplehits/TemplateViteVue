@@ -9,6 +9,7 @@
     "prod": "vite --mode production --open",
     "prodDebug": "vite --mode production --port 5174",
     "build": "vite build",
+    "stag": "vite build --mode staging",
     "preview": "vite preview",
     "format": "prettier --write . && eslint --fix ."
   },

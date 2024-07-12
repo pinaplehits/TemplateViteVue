@@ -3,7 +3,7 @@ import { mapImagesToUrl } from '@utils/imageUtils.js'
 
 export const useGlobalStore = defineStore('global', () => {
   const rootUrl =
-    import.meta.env.MODE === 'development'
+    import.meta.env.MODE !== 'production'
       ? `${import.meta.env.VITE_STATIC_FILES}/devdata`
       : `${import.meta.env.VITE_STATIC_FILES}/data`
 
