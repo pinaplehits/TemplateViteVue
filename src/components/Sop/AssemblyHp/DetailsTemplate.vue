@@ -85,7 +85,7 @@
     const formData = new FormData()
     formData.append('PowerPoint', file)
     formData.append('IdStation', idStation)
-    formData.append('IdSop', props.idSop)
+    formData.append('IdSop', parseInt(props.idSop))
 
     try {
       await apiClient.post('Hp/Sop/AssemblyHpStation/Upload', formData, {
