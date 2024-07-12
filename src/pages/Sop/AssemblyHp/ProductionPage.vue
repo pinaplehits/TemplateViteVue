@@ -27,7 +27,7 @@
 
       images.value = useGlobalStore().imageSopAssyHpUrl(
         items[0].IdDoc,
-        items[0].IdStation,
+        data.value.IdStation,
         items[0].Images
       )
 
