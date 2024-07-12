@@ -107,7 +107,7 @@
     stations.value.loading = true
     try {
       const data = {
-        SopId: props.idSop,
+        SopId: parseInt(props.idSop),
         StationsId: stations.value.selected
       }
 
